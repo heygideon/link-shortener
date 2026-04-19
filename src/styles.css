@@ -1,0 +1,13 @@
+@import "@fontsource-variable/jetbrains-mono";
+@import "tailwindcss";
+
+@theme {
+  --font-mono: "JetBrains Mono Variable", monospace;
+  --default-font-family: var(--font-mono);
+}
+
+@layer base {
+  body {
+    @apply dark:bg-neutral-900 dark:text-white;
+  }
+}
