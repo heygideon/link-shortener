@@ -19,6 +19,7 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@base-ui/react": "^1.4.0",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@libsql/client": "^0.17.2",
     "@paralleldrive/cuid2": "^3.3.0",
@@ -32,6 +33,7 @@
     "@tanstack/react-start": "latest",
     "@tanstack/router-plugin": "^1.132.0",
     "better-auth": "^1.5.3",
+    "clsx": "^2.1.1",
     "dayjs": "^1.11.20",
     "drizzle-orm": "1.0.0-beta.22",
     "lucide-react": "^0.545.0",
