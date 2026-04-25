@@ -9,7 +9,7 @@ function SelectTrigger({ className, ...props }: SelectPrimitive.Trigger.Props) {
     <SelectPrimitive.Trigger
       {...props}
       className={clsx(
-        "flex h-8 w-44 items-center justify-between border border-neutral-700 px-2 text-neutral-400 ring-amber-300 outline-none focus:border-amber-300 focus:ring-1",
+        "flex h-8 items-center justify-between border border-neutral-700 px-2 text-neutral-400 ring-amber-300 outline-none focus:border-amber-300 focus:ring-1",
         className,
       )}
     >

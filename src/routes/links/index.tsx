@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import dayjs from "dayjs";
 import { MousePointerClickIcon } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { withoutProtocol } from "ufo";
 import { z } from "zod";
 import type { getLinks } from "#/actions/home";
@@ -15,11 +15,11 @@ import {
   SelectTrigger,
 } from "#/components/Select";
 
-type Link = Awaited<ReturnType<typeof getLinks>>[number];
+type LinkItem = Awaited<ReturnType<typeof getLinks>>[number];
 interface SortOption {
   value: string;
   label: string;
-  sort: (a: Link, b: Link) => number;
+  sort: (a: LinkItem, b: LinkItem) => number;
 }
 
 const sortOptions = [
@@ -102,11 +102,14 @@ function App() {
         a radically simple link shortener.
       </p>
       <div className="mt-8">
-        <div className="flex justify-between gap-2">
+        <div className="flex items-baseline justify-between gap-2">
           <h1 className="font-bold">your urls</h1>
-          <span className="text-amber-300 hover:bg-amber-300 hover:text-black">
+          <Link
+            to="/links/new"
+            className="text-sm text-amber-300 hover:bg-amber-300 hover:text-black"
+          >
             [+ shorten]
-          </span>
+          </Link>
         </div>
         <div className="mt-2 flex gap-2">
           <Input
@@ -124,7 +127,7 @@ function App() {
               navigate({ search: (s) => ({ ...s, sort: opt.value }) });
             }}
           >
-            <SelectTrigger />
+            <SelectTrigger className="w-44" />
             <SelectContent>
               {sortOptions.map((item) => (
                 <SelectItem key={item.value} value={item}>
