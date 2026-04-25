@@ -68,7 +68,7 @@ const sortOptions = [
 ] as const satisfies SortOption[];
 const sortValues = sortOptions.map((opt) => opt.value);
 
-export const Route = createFileRoute("/links/")({
+export const Route = createFileRoute("/app/links/")({
   validateSearch: z.object({
     sort: z.enum(sortValues).default("newest-first").catch("newest-first"),
     search: z.string().default("").catch(""),
@@ -105,7 +105,7 @@ function App() {
         <div className="flex items-baseline justify-between gap-2">
           <h1 className="font-bold">your urls</h1>
           <Link
-            to="/links/new"
+            to="/app/links/new"
             className="text-sm text-amber-300 hover:bg-amber-300 hover:text-black"
           >
             [+ shorten]

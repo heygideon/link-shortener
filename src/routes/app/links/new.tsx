@@ -1,7 +1,6 @@
-import { revalidateLogic, useForm, useStore } from "@tanstack/react-form";
+import { revalidateLogic, useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo } from "react";
 import { createLink } from "#/actions/new";
 import { createLinkSchema } from "#/actions/new/schema";
 import Input from "#/components/Input";
@@ -15,7 +14,7 @@ import { genLinkKey } from "#/lib/link";
 
 const domains = ["heya.gdn"];
 
-export const Route = createFileRoute("/links/new")({
+export const Route = createFileRoute("/app/links/new")({
   loader() {
     return { defaultKey: genLinkKey() };
   },
@@ -30,7 +29,7 @@ function App() {
     mutationFn: createLink,
     async onSuccess() {
       await navigate({
-        to: "/links",
+        to: "/app/links",
         search: {
           sort: "newest-first",
         },
@@ -56,7 +55,8 @@ function App() {
   return (
     <div className="mx-auto max-w-4xl p-8">
       <Link
-        to="/links"
+        from={Route.fullPath}
+        to=".."
         className="mb-1.5 block w-fit text-sm text-neutral-400 hover:bg-neutral-400 hover:text-black"
       >
         [back]

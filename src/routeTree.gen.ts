@@ -10,9 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AppRouteRouteImport } from './routes/app/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as LinksIndexRouteImport } from './routes/links/index'
-import { Route as LinksNewRouteImport } from './routes/links/new'
+import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as AppLinksIndexRouteImport } from './routes/app/links/index'
+import { Route as AppDomainsIndexRouteImport } from './routes/app/domains/index'
+import { Route as AppAnalyticsIndexRouteImport } from './routes/app/analytics/index'
+import { Route as AppLinksNewRouteImport } from './routes/app/links/new'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const AboutRoute = AboutRouteImport.update({
@@ -20,20 +24,40 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRouteRoute = AppRouteRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LinksIndexRoute = LinksIndexRouteImport.update({
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppLinksIndexRoute = AppLinksIndexRouteImport.update({
   id: '/links/',
   path: '/links/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRouteRoute,
 } as any)
-const LinksNewRoute = LinksNewRouteImport.update({
+const AppDomainsIndexRoute = AppDomainsIndexRouteImport.update({
+  id: '/domains/',
+  path: '/domains/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppAnalyticsIndexRoute = AppAnalyticsIndexRouteImport.update({
+  id: '/analytics/',
+  path: '/analytics/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppLinksNewRoute = AppLinksNewRouteImport.update({
   id: '/links/new',
   path: '/links/new',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRouteRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
@@ -43,39 +67,76 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
   '/about': typeof AboutRoute
-  '/links/new': typeof LinksNewRoute
-  '/links/': typeof LinksIndexRoute
+  '/app/': typeof AppIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/app/links/new': typeof AppLinksNewRoute
+  '/app/analytics/': typeof AppAnalyticsIndexRoute
+  '/app/domains/': typeof AppDomainsIndexRoute
+  '/app/links/': typeof AppLinksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/links/new': typeof LinksNewRoute
-  '/links': typeof LinksIndexRoute
+  '/app': typeof AppIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/app/links/new': typeof AppLinksNewRoute
+  '/app/analytics': typeof AppAnalyticsIndexRoute
+  '/app/domains': typeof AppDomainsIndexRoute
+  '/app/links': typeof AppLinksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
   '/about': typeof AboutRoute
-  '/links/new': typeof LinksNewRoute
-  '/links/': typeof LinksIndexRoute
+  '/app/': typeof AppIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/app/links/new': typeof AppLinksNewRoute
+  '/app/analytics/': typeof AppAnalyticsIndexRoute
+  '/app/domains/': typeof AppDomainsIndexRoute
+  '/app/links/': typeof AppLinksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/links/new' | '/links/' | '/api/auth/$'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/about'
+    | '/app/'
+    | '/api/auth/$'
+    | '/app/links/new'
+    | '/app/analytics/'
+    | '/app/domains/'
+    | '/app/links/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/links/new' | '/links' | '/api/auth/$'
-  id: '__root__' | '/' | '/about' | '/links/new' | '/links/' | '/api/auth/$'
+  to:
+    | '/'
+    | '/about'
+    | '/app'
+    | '/api/auth/$'
+    | '/app/links/new'
+    | '/app/analytics'
+    | '/app/domains'
+    | '/app/links'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/about'
+    | '/app/'
+    | '/api/auth/$'
+    | '/app/links/new'
+    | '/app/analytics/'
+    | '/app/domains/'
+    | '/app/links/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRouteRoute: typeof AppRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
-  LinksNewRoute: typeof LinksNewRoute
-  LinksIndexRoute: typeof LinksIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -88,6 +149,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -95,19 +163,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/links/': {
-      id: '/links/'
-      path: '/links'
-      fullPath: '/links/'
-      preLoaderRoute: typeof LinksIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRouteRoute
     }
-    '/links/new': {
-      id: '/links/new'
+    '/app/links/': {
+      id: '/app/links/'
+      path: '/links'
+      fullPath: '/app/links/'
+      preLoaderRoute: typeof AppLinksIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/domains/': {
+      id: '/app/domains/'
+      path: '/domains'
+      fullPath: '/app/domains/'
+      preLoaderRoute: typeof AppDomainsIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/analytics/': {
+      id: '/app/analytics/'
+      path: '/analytics'
+      fullPath: '/app/analytics/'
+      preLoaderRoute: typeof AppAnalyticsIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/links/new': {
+      id: '/app/links/new'
       path: '/links/new'
-      fullPath: '/links/new'
-      preLoaderRoute: typeof LinksNewRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/app/links/new'
+      preLoaderRoute: typeof AppLinksNewRouteImport
+      parentRoute: typeof AppRouteRoute
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -119,11 +208,30 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AppRouteRouteChildren {
+  AppIndexRoute: typeof AppIndexRoute
+  AppLinksNewRoute: typeof AppLinksNewRoute
+  AppAnalyticsIndexRoute: typeof AppAnalyticsIndexRoute
+  AppDomainsIndexRoute: typeof AppDomainsIndexRoute
+  AppLinksIndexRoute: typeof AppLinksIndexRoute
+}
+
+const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppIndexRoute: AppIndexRoute,
+  AppLinksNewRoute: AppLinksNewRoute,
+  AppAnalyticsIndexRoute: AppAnalyticsIndexRoute,
+  AppDomainsIndexRoute: AppDomainsIndexRoute,
+  AppLinksIndexRoute: AppLinksIndexRoute,
+}
+
+const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
+  AppRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRouteRoute: AppRouteRouteWithChildren,
   AboutRoute: AboutRoute,
-  LinksNewRoute: LinksNewRoute,
-  LinksIndexRoute: LinksIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
