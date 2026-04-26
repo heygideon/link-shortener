@@ -1,4 +1,10 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import { getUser } from "#/actions/auth";
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  redirect,
+} from "@tanstack/react-router";
 
 const nav = [
   { label: "links", value: "/app/links" },
@@ -7,10 +13,20 @@ const nav = [
 ] as const;
 
 export const Route = createFileRoute("/app")({
+  async beforeLoad({ abortController }) {
+    try {
+      const user = await getUser({ signal: abortController.signal });
+      return { user };
+    } catch (_e) {
+      throw redirect({ to: "/", search: { auth_error: "Not logged in" } });
+    }
+  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { user } = Route.useRouteContext();
+
   return (
     <>
       <header className="h-10 border-b border-neutral-800 bg-neutral-950">
@@ -33,12 +49,17 @@ function RouteComponent() {
               </Link>
             ))}
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-neutral-400">{user.firstName}</span>
             <button
               type="button"
               className="grid size-6 place-items-center hover:bg-neutral-700"
             >
-              <div className="size-4 bg-amber-300"></div>
+              <img
+                src={`https://cachet.dunkirk.sh/users/${user.slackId}/r`}
+                alt=""
+                className="size-5"
+              />
             </button>
           </div>
         </div>

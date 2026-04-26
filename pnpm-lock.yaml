@@ -68,6 +68,9 @@ importers:
       nanoid:
         specifier: ^5.1.9
         version: 5.1.9
+      ofetch:
+        specifier: ^1.5.1
+        version: 1.5.1
       react:
         specifier: ^19.2.0
         version: 19.2.5
@@ -2699,6 +2702,9 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
+  ofetch@1.5.1:
+    resolution: {integrity: sha512-2W4oUZlVaqAPAil6FUg/difl6YhqhUR7x2eZY4bQCko22UXg3hptq9KLQdqFClV+Wu85UX7hNtdGTngi/1BxcA==}
+
   ohash@2.0.11:
     resolution: {integrity: sha512-RdR9FQrFwNBNXAr4GixM8YaRZRJ5PUWbKYbE5eOsrwAjJW0q2REGcf79oYPsLyskQCZG1PLN+S/K1V00joZAoQ==}
 
@@ -5141,8 +5147,7 @@ snapshots:
 
   dequal@2.0.3: {}
 
-  destr@2.0.5:
-    optional: true
+  destr@2.0.5: {}
 
   detect-libc@2.0.2: {}
 
@@ -5660,8 +5665,7 @@ snapshots:
 
   node-domexception@1.0.0: {}
 
-  node-fetch-native@1.6.7:
-    optional: true
+  node-fetch-native@1.6.7: {}
 
   node-fetch@2.7.0:
     dependencies:
@@ -5687,6 +5691,12 @@ snapshots:
       pathe: 2.0.3
       tinyexec: 1.1.1
     optional: true
+
+  ofetch@1.5.1:
+    dependencies:
+      destr: 2.0.5
+      node-fetch-native: 1.6.7
+      ufo: 1.6.3
 
   ohash@2.0.11:
     optional: true

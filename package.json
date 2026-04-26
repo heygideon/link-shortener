@@ -39,6 +39,7 @@
     "drizzle-orm": "1.0.0-beta.22",
     "lucide-react": "^0.545.0",
     "nanoid": "^5.1.9",
+    "ofetch": "^1.5.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "tailwindcss": "^4.1.18",
