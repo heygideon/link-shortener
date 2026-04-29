@@ -18,6 +18,7 @@ export const Route = createFileRoute("/app")({
       const user = await getUser({ signal: abortController.signal });
       return { user };
     } catch (_e) {
+      if (abortController.signal.aborted) return;
       throw redirect({ to: "/", search: { auth_error: "Not logged in" } });
     }
   },
