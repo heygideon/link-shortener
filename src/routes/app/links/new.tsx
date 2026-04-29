@@ -1,5 +1,5 @@
 import { revalidateLogic, useForm } from "@tanstack/react-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createLink } from "#/actions/new";
 import { createLinkSchema } from "#/actions/new/schema";
@@ -11,11 +11,11 @@ import {
   SelectTrigger,
 } from "#/components/Select";
 import { genLinkKey } from "#/lib/link";
-
-const domains = ["heya.gdn"];
+import { getDomainsQuery } from "#/actions/domains/queries";
 
 export const Route = createFileRoute("/app/links/new")({
-  loader() {
+  async loader({ context: { queryClient } }) {
+    await queryClient.ensureQueryData(getDomainsQuery());
     return { defaultKey: genLinkKey() };
   },
   component: App,
@@ -24,6 +24,8 @@ export const Route = createFileRoute("/app/links/new")({
 function App() {
   const navigate = Route.useNavigate();
   const { defaultKey } = Route.useLoaderData();
+
+  const { data: domains } = useSuspenseQuery(getDomainsQuery());
 
   const { mutateAsync, error } = useMutation({
     mutationFn: createLink,
@@ -39,7 +41,7 @@ function App() {
 
   const form = useForm({
     defaultValues: {
-      domain: "",
+      domain: domains[0]?.domain || "",
       key: "",
       url: "",
     },
@@ -105,9 +107,9 @@ function App() {
                 >
                   <SelectTrigger className="w-44" />
                   <SelectContent>
-                    {domains.map((item) => (
-                      <SelectItem key={item} value={item}>
-                        {item}
+                    {domains.map(({ domain }) => (
+                      <SelectItem key={domain} value={domain}>
+                        {domain}
                       </SelectItem>
                     ))}
                   </SelectContent>

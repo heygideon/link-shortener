@@ -71,7 +71,7 @@ const sortValues = sortOptions.map((opt) => opt.value);
 export const Route = createFileRoute("/app/links/")({
   validateSearch: z.object({
     sort: z.enum(sortValues).default("newest-first").catch("newest-first"),
-    search: z.string().default("").catch(""),
+    search: z.string().optional().catch(undefined),
   }),
   loader: async ({ context: { queryClient } }) => {
     await queryClient.ensureQueryData(getLinksQuery());
@@ -90,6 +90,7 @@ function App() {
 
     return links
       .filter((link) => {
+        if (!search) return true;
         return [link.domain, "/", link.key].join("").includes(search);
       })
       .sort(sortOption.sort);

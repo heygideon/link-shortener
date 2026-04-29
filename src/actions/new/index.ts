@@ -11,7 +11,16 @@ export const createLink = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const key = data.key || genLinkKey();
 
-    // TODO: check user has access to domain
+    const domain = await db.query.domains.findFirst({
+      where: {
+        domain: data.domain,
+        userId: context.user.id,
+      },
+    });
+    if (!domain) {
+      throw new Error(`Domain ${data.domain} not linked`);
+    }
+
     try {
       await db.insert(links).values({
         domain: data.domain,
