@@ -1,4 +1,5 @@
 import { getUser } from "#/actions/auth";
+import { getUserQuery } from "#/actions/auth/queries";
 import {
   createFileRoute,
   Link,
@@ -13,12 +14,11 @@ const nav = [
 ] as const;
 
 export const Route = createFileRoute("/app")({
-  async beforeLoad({ abortController }) {
+  async beforeLoad({ context: { queryClient } }) {
     try {
-      const user = await getUser({ signal: abortController.signal });
+      const user = await queryClient.ensureQueryData(getUserQuery());
       return { user };
     } catch (_e) {
-      if (abortController.signal.aborted) return;
       throw redirect({ to: "/", search: { auth_error: "Not logged in" } });
     }
   },
