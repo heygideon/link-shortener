@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppRouteRouteImport } from './routes/app/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app/index'
@@ -21,11 +20,6 @@ import { Route as AppLinksNewRouteImport } from './routes/app/links/new'
 import { Route as AppAuthCallbackRouteImport } from './routes/app/auth/callback'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AppRouteRoute = AppRouteRouteImport.update({
   id: '/app',
   path: '/app',
@@ -80,7 +74,6 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteRouteWithChildren
-  '/about': typeof AboutRoute
   '/app/': typeof AppIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/app/auth/callback': typeof AppAuthCallbackRoute
@@ -92,7 +85,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/app': typeof AppIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/app/auth/callback': typeof AppAuthCallbackRoute
@@ -106,7 +98,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteRouteWithChildren
-  '/about': typeof AboutRoute
   '/app/': typeof AppIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/app/auth/callback': typeof AppAuthCallbackRoute
@@ -121,7 +112,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
-    | '/about'
     | '/app/'
     | '/api/auth/$'
     | '/app/auth/callback'
@@ -133,7 +123,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/app'
     | '/api/auth/$'
     | '/app/auth/callback'
@@ -146,7 +135,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/app'
-    | '/about'
     | '/app/'
     | '/api/auth/$'
     | '/app/auth/callback'
@@ -160,19 +148,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRouteRoute: typeof AppRouteRouteWithChildren
-  AboutRoute: typeof AboutRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/app': {
       id: '/app'
       path: '/app'
@@ -273,7 +253,6 @@ const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRouteRoute: AppRouteRouteWithChildren,
-  AboutRoute: AboutRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
