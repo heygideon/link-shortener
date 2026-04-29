@@ -20,7 +20,9 @@ export const users = sqliteTable("users", {
 
 export const domains = sqliteTable("domains", {
   domain: text("domain").primaryKey(),
-  userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
 
   createdAt: timestamps.createdAt,
 });
@@ -37,7 +39,9 @@ export const links = sqliteTable(
     key: text("key").notNull(),
     url: text("url").notNull(),
 
-    userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
     archived: int("archived", { mode: "boolean" }).notNull().default(false),
 
     ...timestamps,
