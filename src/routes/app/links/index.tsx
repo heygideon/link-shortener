@@ -7,13 +7,13 @@ import { withoutProtocol } from "ufo";
 import { z } from "zod";
 import type { getLinks } from "#/actions/home";
 import { getLinksQuery } from "#/actions/home/queries";
-import Input from "#/components/Input";
+import Input from "#/components/ui/Input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-} from "#/components/Select";
+} from "#/components/ui/Select";
 
 type LinkItem = Awaited<ReturnType<typeof getLinks>>[number];
 interface SortOption {

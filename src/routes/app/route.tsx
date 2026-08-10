@@ -1,5 +1,4 @@
-import { getUser } from "#/actions/auth";
-import { getUserQuery } from "#/actions/auth/queries";
+import UserDropdown from "#/components/app/UserDropdown";
 import {
   createFileRoute,
   Link,
@@ -14,20 +13,16 @@ const nav = [
 ] as const;
 
 export const Route = createFileRoute("/app")({
-  async beforeLoad({ context: { queryClient } }) {
-    try {
-      const user = await queryClient.ensureQueryData(getUserQuery());
-      return { user };
-    } catch (_e) {
-      throw redirect({ to: "/", search: { auth_error: "Not logged in" } });
+  async beforeLoad({ context }) {
+    if (!context.user) {
+      throw redirect({ to: "/" });
     }
+    return { user: context.user };
   },
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { user } = Route.useRouteContext();
-
   return (
     <>
       <header className="h-10 border-b border-neutral-800 bg-neutral-950">
@@ -50,19 +45,7 @@ function RouteComponent() {
               </Link>
             ))}
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-neutral-400">{user.firstName}</span>
-            <button
-              type="button"
-              className="grid size-6 place-items-center hover:bg-neutral-700"
-            >
-              <img
-                src={`https://cachet.dunkirk.sh/users/${user.slackId}/r`}
-                alt=""
-                className="size-5"
-              />
-            </button>
-          </div>
+          <UserDropdown />
         </div>
       </header>
       <div className="mx-auto max-w-4xl">

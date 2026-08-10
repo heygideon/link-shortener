@@ -1,10 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import z from "zod";
 
 export const Route = createFileRoute("/")({
   validateSearch: z.object({
     auth_error: z.string().optional(),
   }),
+  beforeLoad: async ({ context }) => {
+    if (context.user) {
+      throw redirect({ to: "/app" });
+    }
+  },
   component: RouteComponent,
 });
 

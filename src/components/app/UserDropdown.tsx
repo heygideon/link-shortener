@@ -1,0 +1,72 @@
+import { logout } from "#/actions/auth";
+import { getCurrentUserQuery } from "#/actions/auth/queries";
+import { Menu } from "@base-ui/react/menu";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
+import { LogOutIcon } from "lucide-react";
+
+export default function UserDropdown() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { data: user } = useSuspenseQuery(getCurrentUserQuery());
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => logout(),
+    onSuccess: async () => {
+      queryClient.clear();
+      await navigate({ to: "/" });
+    },
+  });
+
+  return (
+    <Menu.Root>
+      <Menu.Trigger className="group flex items-center gap-2">
+        <span className="text-xs text-neutral-400">{user!.firstName}</span>
+        <div className="grid size-6 place-items-center group-hover:bg-neutral-700 group-data-popup-open:bg-neutral-700">
+          <img
+            src={`https://cachet.dunkirk.sh/users/${user!.slackId}/r`}
+            alt=""
+            className="size-5"
+          />
+        </div>
+      </Menu.Trigger>
+      <Menu.Portal>
+        <Menu.Positioner align="end" sideOffset={4}>
+          <Menu.Popup className="relative w-64 border border-neutral-700 bg-neutral-900 p-3 outline-4 outline-neutral-900">
+            <div className="flex items-center gap-3">
+              <img
+                src={`https://cachet.dunkirk.sh/users/${user!.slackId}/r`}
+                alt=""
+                className="size-8 flex-none"
+              />
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm">
+                  {user!.firstName} {user!.lastName}
+                </p>
+                <p className="truncate text-xs text-neutral-400">
+                  {user!.email}
+                </p>
+              </div>
+            </div>
+            <div className="mt-3 border-t border-neutral-700 pt-3">
+              <Menu.Item
+                onClick={() => mutate()}
+                disabled={isPending}
+                closeOnClick={false}
+                className="-m-1.5 flex items-center gap-2 p-1.5 data-disabled:opacity-50 data-highlighted:not-data-disabled:bg-amber-300 data-highlighted:not-data-disabled:text-black"
+              >
+                <LogOutIcon className="size-4" />
+                <p className="text-xs">Logout</p>
+              </Menu.Item>
+            </div>
+          </Menu.Popup>
+        </Menu.Positioner>
+      </Menu.Portal>
+    </Menu.Root>
+  );
+}

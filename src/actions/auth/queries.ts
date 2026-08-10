@@ -1,8 +1,8 @@
 import { queryOptions } from "@tanstack/react-query";
-import { getUser } from ".";
+import { getCurrentUser } from ".";
 
-export const getUserQuery = () =>
+export const getCurrentUserQuery = () =>
   queryOptions({
-    queryKey: ["auth", "getUser"],
-    queryFn: ({ signal }) => getUser({ signal }),
+    queryKey: ["auth", "getCurrentUser"],
+    queryFn: ({ signal }) => getCurrentUser({ signal }),
   });

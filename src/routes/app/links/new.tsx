@@ -3,13 +3,13 @@ import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createLink } from "#/actions/new";
 import { createLinkSchema } from "#/actions/new/schema";
-import Input from "#/components/Input";
+import Input from "#/components/ui/Input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-} from "#/components/Select";
+} from "#/components/ui/Select";
 import { genLinkKey } from "#/lib/link";
 import { getDomainsQuery } from "#/actions/domains/queries";
 
