@@ -2,6 +2,10 @@ import z from "zod";
 
 export const createLinkSchema = z.object({
   domain: z.string().min(1, "Required"),
-  key: z.string(),
+  key: z
+    .string()
+    .trim()
+    .regex(/^[A-Za-z0-9-_/]+$/, "Invalid format")
+    .transform((key) => key.split("/").filter(Boolean).join("/")),
   url: z.url("Invalid URL"),
 });
