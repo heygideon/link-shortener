@@ -17,6 +17,15 @@ export const users = sqliteTable("users", {
 
   ...timestamps,
 });
+export const sessions = sqliteTable("sessions", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => cuid2()),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  expiresAt: int("expires_at", { mode: "timestamp" }).notNull(),
+});
 
 export const domains = sqliteTable("domains", {
   domain: text("domain").primaryKey(),

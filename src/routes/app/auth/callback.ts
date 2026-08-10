@@ -2,7 +2,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { getCookie } from "@tanstack/react-start/server";
 import { joinURL, withQuery } from "ufo";
 import { ofetch } from "ofetch";
-import { useAppSession } from "#/lib/session";
+import { createSession, useAppSession } from "#/lib/session";
 import db from "#/db";
 import { users } from "#/db/schema";
 
@@ -87,11 +87,9 @@ export const Route = createFileRoute("/app/auth/callback")({
               lastName: user.family_name,
               slackId: user.slack_id,
             })
-            .onConflictDoNothing();
+            .onConflictDoNothing({ target: users.id });
 
-          // biome-ignore lint/correctness/useHookAtTopLevel: not a React hook
-          const session = await useAppSession();
-          await session.update({ userId: user.sub });
+          await createSession(user.sub);
         } catch (_e) {
           console.error(_e);
           throw redirect({
