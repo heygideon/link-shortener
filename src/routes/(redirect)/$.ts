@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import db from "#/db";
+import { linkClicks } from "#/db/schema";
 
 export const Route = createFileRoute("/(redirect)/$")({
   server: {
@@ -18,6 +19,11 @@ export const Route = createFileRoute("/(redirect)/$")({
         if (!link) {
           return new Response("Link not found", { status: 404 });
         }
+
+        // TODO: use waitUntil
+        await db.insert(linkClicks).values({
+          linkId: link.id,
+        });
 
         return Response.redirect(new URL(link.url), 302);
       },
