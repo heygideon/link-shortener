@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteRouteImport } from './routes/app/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as redirectSplatRouteImport } from './routes/(redirect)/$'
 import { Route as AppLinksIndexRouteImport } from './routes/app/links/index'
 import { Route as AppDomainsIndexRouteImport } from './routes/app/domains/index'
 import { Route as AppAuthIndexRouteImport } from './routes/app/auth/index'
@@ -34,6 +35,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppRouteRoute,
+} as any)
+const redirectSplatRoute = redirectSplatRouteImport.update({
+  id: '/(redirect)/$',
+  path: '/$',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppLinksIndexRoute = AppLinksIndexRouteImport.update({
   id: '/links/',
@@ -74,6 +80,7 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteRouteWithChildren
+  '/$': typeof redirectSplatRoute
   '/app/': typeof AppIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/app/auth/callback': typeof AppAuthCallbackRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$': typeof redirectSplatRoute
   '/app': typeof AppIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/app/auth/callback': typeof AppAuthCallbackRoute
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteRouteWithChildren
+  '/(redirect)/$': typeof redirectSplatRoute
   '/app/': typeof AppIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/app/auth/callback': typeof AppAuthCallbackRoute
@@ -112,6 +121,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
+    | '/$'
     | '/app/'
     | '/api/auth/$'
     | '/app/auth/callback'
@@ -123,6 +133,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$'
     | '/app'
     | '/api/auth/$'
     | '/app/auth/callback'
@@ -135,6 +146,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/app'
+    | '/(redirect)/$'
     | '/app/'
     | '/api/auth/$'
     | '/app/auth/callback'
@@ -148,6 +160,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRouteRoute: typeof AppRouteRouteWithChildren
+  redirectSplatRoute: typeof redirectSplatRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -173,6 +186,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRouteRoute
+    }
+    '/(redirect)/$': {
+      id: '/(redirect)/$'
+      path: '/$'
+      fullPath: '/$'
+      preLoaderRoute: typeof redirectSplatRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/app/links/': {
       id: '/app/links/'
@@ -253,6 +273,7 @@ const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRouteRoute: AppRouteRouteWithChildren,
+  redirectSplatRoute: redirectSplatRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
