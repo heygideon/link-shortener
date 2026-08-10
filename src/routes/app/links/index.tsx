@@ -114,8 +114,12 @@ function App() {
         </div>
         <div className="mt-2 flex gap-2">
           <Input
+            defaultValue={search}
             onChange={(ev) => {
-              navigate({ search: (s) => ({ ...s, search: ev.target.value }) });
+              navigate({
+                search: (s) => ({ ...s, search: ev.target.value }),
+                resetScroll: false,
+              });
             }}
             placeholder="search..."
             className="min-w-0 flex-1"
@@ -125,7 +129,10 @@ function App() {
             value={sortOptions.find((opt) => opt.value === sort)}
             onValueChange={(opt) => {
               if (!opt) return;
-              navigate({ search: (s) => ({ ...s, sort: opt.value }) });
+              navigate({
+                search: (s) => ({ ...s, sort: opt.value }),
+                resetScroll: false,
+              });
             }}
           >
             <SelectTrigger className="w-44" />
