@@ -38,14 +38,28 @@ export const editLink = createServerFn()
   .middleware([withLink])
   .inputValidator(editLinkSchema)
   .handler(async ({ context, data }) => {
-    await db
-      .update(links)
-      .set({
+    const domain = await db.query.domains.findFirst({
+      where: {
         domain: data.domain,
-        key: data.key,
-        url: data.url,
-      })
-      .where(eq(links.id, context.link.id));
+        userId: context.user.id,
+      },
+    });
+    if (!domain) {
+      throw new Error(`Domain ${data.domain} not linked`);
+    }
+
+    try {
+      await db
+        .update(links)
+        .set({
+          domain: data.domain,
+          key: data.key,
+          url: data.url,
+        })
+        .where(eq(links.id, context.link.id));
+    } catch (_e) {
+      throw new Error(`${data.domain}/${data.key} already exists`);
+    }
   });
 
 export const deleteLink = createServerFn()
