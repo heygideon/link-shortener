@@ -12,7 +12,7 @@ import FormMessage from "#/components/form/FormMessage";
 import { Field } from "#/components/ui/Field";
 import { getLinkQuery } from "#/actions/edit/queries";
 import { editLinkSchema } from "#/actions/edit/schema";
-import { editLink } from "#/actions/edit";
+import { deleteLink, editLink } from "#/actions/edit";
 
 export const Route = createFileRoute("/app/links/$domain/$")({
   async loader({ params, context: { queryClient } }) {
@@ -25,6 +25,46 @@ export const Route = createFileRoute("/app/links/$domain/$")({
   },
   component: App,
 });
+
+function DeleteButton() {
+  const navigate = Route.useNavigate();
+  const params = Route.useParams();
+
+  const { data: link } = useSuspenseQuery(
+    getLinkQuery({ domain: params.domain, key: params._splat || "" }),
+  );
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: deleteLink,
+    async onSuccess() {
+      await navigate({
+        to: "/app/links",
+        search: {
+          sort: "newest-first",
+        },
+      });
+    },
+  });
+
+  return (
+    <button
+      type="button"
+      disabled={isPending}
+      onClick={() => {
+        if (
+          confirm(
+            "This will delete this link and any analytics data, which could break existing links. Are you sure?",
+          )
+        ) {
+          mutate({ data: { id: link.id } });
+        }
+      }}
+      className="block w-fit text-sm text-red-300 hover:bg-red-300 hover:text-black disabled:bg-transparent disabled:text-neutral-600"
+    >
+      [delete]
+    </button>
+  );
+}
 
 function App() {
   const navigate = Route.useNavigate();
@@ -66,13 +106,16 @@ function App() {
 
   return (
     <div className="mx-auto max-w-4xl p-8">
-      <Link
-        from={Route.fullPath}
-        to="../.."
-        className="mb-1.5 block w-fit text-sm text-neutral-400 hover:bg-neutral-400 hover:text-black"
-      >
-        [back]
-      </Link>
+      <div className="mb-1.5 flex justify-between">
+        <Link
+          from={Route.fullPath}
+          to="../.."
+          className="text-sm text-neutral-400 hover:bg-neutral-400 hover:text-black"
+        >
+          [back]
+        </Link>
+        <DeleteButton />
+      </div>
       <h1 className="font-bold">
         editing {link.domain}/{link.key}
       </h1>
