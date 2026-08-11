@@ -7,6 +7,9 @@
 }
 
 @layer base {
+  html {
+    color-scheme: dark;
+  }
   body {
     @apply bg-neutral-900 text-white;
   }
