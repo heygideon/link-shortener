@@ -3,6 +3,6 @@ import { getLink } from ".";
 
 export const getLinkQuery = (data: { domain: string; key: string }) =>
   queryOptions({
-    queryKey: ["edit", "getLink"],
+    queryKey: ["edit", "getLink", data],
     queryFn: ({ signal }) => getLink({ data, signal }),
   });
