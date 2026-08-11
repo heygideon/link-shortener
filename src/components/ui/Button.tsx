@@ -5,16 +5,16 @@ import type { ComponentProps } from "react";
 import type { Merge } from "type-fest";
 
 export const button = cva({
-  base: "block w-fit text-sm hover:text-black disabled:bg-transparent disabled:text-neutral-600",
+  base: "block w-fit text-sm hover:text-black focus:text-black outline-none disabled:bg-transparent disabled:text-neutral-600",
   variants: {
     size: {
       xs: "text-xs",
       sm: "text-sm",
     },
     color: {
-      amber: "text-amber-300 hover:bg-amber-300",
-      red: "text-red-300 hover:bg-red-300",
-      neutral: "text-neutral-400 hover:bg-neutral-400",
+      amber: "text-amber-300 hover:bg-amber-300 focus:bg-amber-300",
+      red: "text-red-300 hover:bg-red-300 focus:bg-red-300",
+      neutral: "text-neutral-400 hover:bg-neutral-400 focus:bg-neutral-400",
     },
   },
   defaultVariants: {
