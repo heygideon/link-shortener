@@ -1,6 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { MousePointerClickIcon } from "lucide-react";
 import { useMemo } from "react";
 import { withoutProtocol } from "ufo";
@@ -14,6 +15,9 @@ import {
   SelectItem,
   SelectTrigger,
 } from "#/components/ui/Select";
+import clsx from "clsx";
+
+dayjs.extend(relativeTime);
 
 type LinkItem = Awaited<ReturnType<typeof getLinks>>[number];
 interface SortOption {
@@ -163,17 +167,27 @@ function App() {
                   <p className="bg-pink-700 px-1.5 font-bold text-white">
                     tag-1
                   </p>
-                  <div className="ml-1.5 flex h-5 items-center gap-1 border border-neutral-700 px-1 text-neutral-400">
+                  <div
+                    className={clsx(
+                      "ml-1.5 flex h-5 items-center gap-1 border border-neutral-700 px-1.5 text-neutral-400",
+                      !link.clicks && "opacity-50",
+                    )}
+                  >
                     <MousePointerClickIcon className="size-4" />
                     <span>{link.clicks}</span>
                   </div>
                 </div>
                 <div className="mt-1.5 flex text-xs">
                   <p className="text-neutral-400">
-                    -&gt; {withoutProtocol(link.url)} {"//"} created{" "}
-                    {dayjs(link.createdAt).format("YYYY-MM-DD")}
+                    -&gt; {withoutProtocol(link.url)}
                   </p>
                   <div className="flex-1"></div>
+                  <p
+                    title={dayjs(link.createdAt).format("YYYY-MM-DD")}
+                    className="mr-2 text-neutral-400 underline decoration-dotted underline-offset-2"
+                  >
+                    {dayjs(link.createdAt).fromNow()}
+                  </p>
                   <div className="flex items-center gap-1">
                     <span className="text-amber-300 hover:bg-amber-300 hover:text-black">
                       [view]
