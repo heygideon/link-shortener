@@ -149,9 +149,7 @@ function App() {
                     ))}
                   </SelectContent>
                 </Select>
-                <Field.Error>
-                  {field.state.meta.errors[0]?.message || ""}
-                </Field.Error>
+                <Field.Error field={field} />
               </Field.Root>
             )}
           </form.Field>
@@ -169,9 +167,7 @@ function App() {
                     /
                   </div>
                 </div>
-                <Field.Error>
-                  {field.state.meta.errors[0]?.message || ""}
-                </Field.Error>
+                <Field.Error field={field} />
               </Field.Root>
             )}
           </form.Field>
@@ -186,9 +182,7 @@ function App() {
                 onValueChange={(v) => field.handleChange(v)}
                 placeholder="https://google.com"
               />
-              <Field.Error>
-                {field.state.meta.errors[0]?.message || ""}
-              </Field.Error>
+              <Field.Error field={field} />
             </Field.Root>
           )}
         </form.Field>
