@@ -5,9 +5,8 @@ export const createLinkSchema = z.object({
   key: z
     .string()
     .trim()
-    .min(1, "Required")
     .regex(
-      /^[A-Za-z0-9-_/]+$/,
+      /^[A-Za-z0-9-_/]*$/,
       "Only the characters A-Z, a-z, 0-9, -, _, and / are allowed",
     )
     .transform((key) => key.split("/").filter(Boolean).join("/")),
