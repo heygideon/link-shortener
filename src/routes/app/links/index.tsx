@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import clsx from "clsx";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { MousePointerClickIcon } from "lucide-react";
@@ -8,6 +9,7 @@ import { withoutProtocol } from "ufo";
 import { z } from "zod";
 import type { getLinks } from "#/actions/home";
 import { getLinksQuery } from "#/actions/home/queries";
+import { Button, LinkButton } from "#/components/ui/Button";
 import Input from "#/components/ui/Input";
 import {
   Select,
@@ -15,7 +17,6 @@ import {
   SelectItem,
   SelectTrigger,
 } from "#/components/ui/Select";
-import clsx from "clsx";
 
 dayjs.extend(relativeTime);
 
@@ -109,12 +110,7 @@ function App() {
       <div className="mt-8">
         <div className="flex items-baseline justify-between gap-2">
           <h1 className="font-bold">your urls</h1>
-          <Link
-            to="/app/links/new"
-            className="text-sm text-amber-300 hover:bg-amber-300 hover:text-black"
-          >
-            [+ shorten]
-          </Link>
+          <LinkButton to="/app/links/new">[+ shorten]</LinkButton>
         </div>
         <div className="mt-2 flex gap-2">
           <Input
@@ -189,19 +185,17 @@ function App() {
                     {dayjs(link.createdAt).fromNow()}
                   </p>
                   <div className="flex items-center gap-1">
-                    <span className="text-amber-300 hover:bg-amber-300 hover:text-black">
-                      [view]
-                    </span>
-                    <Link
+                    <Button size="xs">[view]</Button>
+                    <LinkButton
                       to="/app/links/$domain/$"
                       params={{
                         domain: link.domain,
                         _splat: link.key,
                       }}
-                      className="text-amber-300 hover:bg-amber-300 hover:text-black"
+                      size="xs"
                     >
                       [edit]
-                    </Link>
+                    </LinkButton>
                   </div>
                 </div>
               </div>

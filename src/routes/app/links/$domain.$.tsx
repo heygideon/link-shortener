@@ -13,6 +13,7 @@ import { Field } from "#/components/ui/Field";
 import { getLinkQuery } from "#/actions/edit/queries";
 import { editLinkSchema } from "#/actions/edit/schema";
 import { deleteLink, editLink } from "#/actions/edit";
+import { Button, LinkButton } from "#/components/ui/Button";
 
 export const Route = createFileRoute("/app/links/$domain/$")({
   async loader({ params, context: { queryClient } }) {
@@ -47,7 +48,7 @@ function DeleteButton() {
   });
 
   return (
-    <button
+    <Button
       type="button"
       disabled={isPending}
       onClick={() => {
@@ -59,10 +60,10 @@ function DeleteButton() {
           mutate({ data: { id: link.id } });
         }
       }}
-      className="block w-fit text-sm text-red-300 hover:bg-red-300 hover:text-black disabled:bg-transparent disabled:text-neutral-600"
+      color="red"
     >
       [delete]
-    </button>
+    </Button>
   );
 }
 
@@ -107,13 +108,9 @@ function App() {
   return (
     <div className="mx-auto max-w-4xl p-8">
       <div className="mb-1.5 flex justify-between">
-        <Link
-          from={Route.fullPath}
-          to="../.."
-          className="text-sm text-neutral-400 hover:bg-neutral-400 hover:text-black"
-        >
+        <LinkButton from={Route.fullPath} to="../.." color="neutral">
           [back]
-        </Link>
+        </LinkButton>
         <DeleteButton />
       </div>
       <h1 className="font-bold">
@@ -191,13 +188,9 @@ function App() {
           selector={(state) => !state.isSubmitting && state.canSubmit}
         >
           {(canSubmit) => (
-            <button
-              type="submit"
-              disabled={!canSubmit}
-              className="mt-6 block w-fit text-sm text-amber-300 hover:bg-amber-300 hover:text-black disabled:bg-transparent disabled:text-neutral-600"
-            >
+            <Button type="submit" disabled={!canSubmit} className="mt-6">
               [submit]
-            </button>
+            </Button>
           )}
         </form.Subscribe>
       </form>

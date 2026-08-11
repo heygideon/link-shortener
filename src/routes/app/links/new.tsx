@@ -13,6 +13,7 @@ import { genLinkKey } from "#/lib/link";
 import { getDomainsQuery } from "#/actions/domains/queries";
 import FormMessage from "#/components/form/FormMessage";
 import { Field } from "#/components/ui/Field";
+import { Button, LinkButton } from "#/components/ui/Button";
 
 export const Route = createFileRoute("/app/links/new")({
   async loader({ context: { queryClient } }) {
@@ -57,13 +58,14 @@ function App() {
 
   return (
     <div className="mx-auto max-w-4xl p-8">
-      <Link
+      <LinkButton
         from={Route.fullPath}
         to=".."
-        className="mb-1.5 block w-fit text-sm text-neutral-400 hover:bg-neutral-400 hover:text-black"
+        color="neutral"
+        className="mb-1.5"
       >
         [back]
-      </Link>
+      </LinkButton>
       <h1 className="font-bold">new link</h1>
 
       <form
@@ -138,13 +140,9 @@ function App() {
           selector={(state) => !state.isSubmitting && state.canSubmit}
         >
           {(canSubmit) => (
-            <button
-              type="submit"
-              disabled={!canSubmit}
-              className="mt-6 block w-fit text-sm text-amber-300 hover:bg-amber-300 hover:text-black disabled:bg-transparent disabled:text-neutral-600"
-            >
+            <Button type="submit" disabled={!canSubmit} className="mt-6">
               [submit]
-            </button>
+            </Button>
           )}
         </form.Subscribe>
       </form>
