@@ -1,35 +1,42 @@
 import { revalidateLogic, useForm } from "@tanstack/react-form";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { createLink } from "#/actions/new";
-import { createLinkSchema } from "#/actions/new/schema";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
 } from "#/components/ui/Select";
-import { genLinkKey } from "#/lib/link";
 import { getDomainsQuery } from "#/actions/domains/queries";
 import FormMessage from "#/components/form/FormMessage";
 import { Field } from "#/components/ui/Field";
+import { getLinkQuery } from "#/actions/edit/queries";
+import { editLinkSchema } from "#/actions/edit/schema";
+import { editLink } from "#/actions/edit";
 
-export const Route = createFileRoute("/app/links/new")({
-  async loader({ context: { queryClient } }) {
-    await queryClient.ensureQueryData(getDomainsQuery());
-    return { defaultKey: genLinkKey() };
+export const Route = createFileRoute("/app/links/$domain/$")({
+  async loader({ params, context: { queryClient } }) {
+    await Promise.all([
+      queryClient.ensureQueryData(getDomainsQuery()),
+      queryClient.ensureQueryData(
+        getLinkQuery({ domain: params.domain, key: params._splat || "" }),
+      ),
+    ]);
   },
   component: App,
 });
 
 function App() {
   const navigate = Route.useNavigate();
-  const { defaultKey } = Route.useLoaderData();
+  const params = Route.useParams();
 
   const { data: domains } = useSuspenseQuery(getDomainsQuery());
+  const { data: link } = useSuspenseQuery(
+    getLinkQuery({ domain: params.domain, key: params._splat || "" }),
+  );
 
   const { mutateAsync, error } = useMutation({
-    mutationFn: createLink,
+    mutationFn: editLink,
     async onSuccess() {
       await navigate({
         to: "/app/links",
@@ -42,16 +49,18 @@ function App() {
 
   const form = useForm({
     defaultValues: {
-      domain: domains[0]?.domain || "",
-      key: "",
-      url: "",
+      domain: link.domain,
+      key: link.key,
+      url: link.url,
     },
     validationLogic: revalidateLogic(),
     validators: {
-      onDynamic: createLinkSchema,
+      onDynamic: editLinkSchema,
     },
     async onSubmit({ value }) {
-      await mutateAsync({ data: { ...value, key: value.key || defaultKey } });
+      await mutateAsync({
+        data: { ...value, id: link.id },
+      });
     },
   });
 
@@ -59,12 +68,14 @@ function App() {
     <div className="mx-auto max-w-4xl p-8">
       <Link
         from={Route.fullPath}
-        to=".."
+        to="../.."
         className="mb-1.5 block w-fit text-sm text-neutral-400 hover:bg-neutral-400 hover:text-black"
       >
         [back]
       </Link>
-      <h1 className="font-bold">new link</h1>
+      <h1 className="font-bold">
+        editing {link.domain}/{link.key}
+      </h1>
 
       <form
         onSubmit={(ev) => {
@@ -109,7 +120,6 @@ function App() {
                   <Field.Control
                     value={field.state.value}
                     onValueChange={(v) => field.handleChange(v)}
-                    placeholder={defaultKey}
                     className="pl-4"
                   />
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex w-4 items-center justify-end text-sm text-neutral-400">

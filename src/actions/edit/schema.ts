@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const createLinkSchema = z.object({
+export const editLinkSchema = z.object({
   domain: z.string().min(1, "Required"),
   key: z
     .string()

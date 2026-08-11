@@ -115,9 +115,9 @@ function App() {
         <div className="mt-2 flex gap-2">
           <Input
             defaultValue={search}
-            onChange={(ev) => {
+            onValueChange={(v) => {
               navigate({
-                search: (s) => ({ ...s, search: ev.target.value }),
+                search: (s) => ({ ...s, search: v }),
                 resetScroll: false,
               });
             }}
@@ -178,9 +178,16 @@ function App() {
                     <span className="text-amber-300 hover:bg-amber-300 hover:text-black">
                       [view]
                     </span>
-                    <span className="text-amber-300 hover:bg-amber-300 hover:text-black">
+                    <Link
+                      to="/app/links/$domain/$"
+                      params={{
+                        domain: link.domain,
+                        _splat: link.key,
+                      }}
+                      className="text-amber-300 hover:bg-amber-300 hover:text-black"
+                    >
                       [edit]
-                    </span>
+                    </Link>
                   </div>
                 </div>
               </div>

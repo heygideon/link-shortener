@@ -20,6 +20,7 @@ import { Route as AppAnalyticsIndexRouteImport } from './routes/app/analytics/in
 import { Route as AppLinksNewRouteImport } from './routes/app/links/new'
 import { Route as AppAuthCallbackRouteImport } from './routes/app/auth/callback'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as AppLinksDomainSplatRouteImport } from './routes/app/links/$domain.$'
 
 const AppRouteRoute = AppRouteRouteImport.update({
   id: '/app',
@@ -76,6 +77,11 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppLinksDomainSplatRoute = AppLinksDomainSplatRouteImport.update({
+  id: '/links/$domain/$',
+  path: '/links/$domain/$',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/app/auth/': typeof AppAuthIndexRoute
   '/app/domains/': typeof AppDomainsIndexRoute
   '/app/links/': typeof AppLinksIndexRoute
+  '/app/links/$domain/$': typeof AppLinksDomainSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/app/auth': typeof AppAuthIndexRoute
   '/app/domains': typeof AppDomainsIndexRoute
   '/app/links': typeof AppLinksIndexRoute
+  '/app/links/$domain/$': typeof AppLinksDomainSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/app/auth/': typeof AppAuthIndexRoute
   '/app/domains/': typeof AppDomainsIndexRoute
   '/app/links/': typeof AppLinksIndexRoute
+  '/app/links/$domain/$': typeof AppLinksDomainSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
     | '/app/auth/'
     | '/app/domains/'
     | '/app/links/'
+    | '/app/links/$domain/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/app/auth'
     | '/app/domains'
     | '/app/links'
+    | '/app/links/$domain/$'
   id:
     | '__root__'
     | '/'
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/app/auth/'
     | '/app/domains/'
     | '/app/links/'
+    | '/app/links/$domain/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -243,6 +255,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/links/$domain/$': {
+      id: '/app/links/$domain/$'
+      path: '/links/$domain/$'
+      fullPath: '/app/links/$domain/$'
+      preLoaderRoute: typeof AppLinksDomainSplatRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
   }
 }
 
@@ -254,6 +273,7 @@ interface AppRouteRouteChildren {
   AppAuthIndexRoute: typeof AppAuthIndexRoute
   AppDomainsIndexRoute: typeof AppDomainsIndexRoute
   AppLinksIndexRoute: typeof AppLinksIndexRoute
+  AppLinksDomainSplatRoute: typeof AppLinksDomainSplatRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
@@ -264,6 +284,7 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppAuthIndexRoute: AppAuthIndexRoute,
   AppDomainsIndexRoute: AppDomainsIndexRoute,
   AppLinksIndexRoute: AppLinksIndexRoute,
+  AppLinksDomainSplatRoute: AppLinksDomainSplatRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
