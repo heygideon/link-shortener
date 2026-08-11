@@ -55,14 +55,14 @@ const sortOptions = [
     value: "most-clicks",
     label: "most clicks",
     sort(a, b) {
-      return a.clicks - b.clicks;
+      return b.clicks - a.clicks;
     },
   },
   {
     value: "least-clicks",
     label: "least clicks",
     sort(a, b) {
-      return b.clicks - a.clicks;
+      return a.clicks - b.clicks;
     },
   },
 ] as const satisfies SortOption[];
