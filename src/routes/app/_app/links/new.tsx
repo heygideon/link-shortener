@@ -1,19 +1,23 @@
-import { revalidateLogic, useForm } from "@tanstack/react-form";
+import { revalidateLogic, useForm, useStore } from "@tanstack/react-form";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { getDomainsQuery } from "#/actions/domains/queries";
+import { editLinkSchema } from "#/actions/edit/schema";
 import { createLink } from "#/actions/new";
 import { createLinkSchema } from "#/actions/new/schema";
+import FormMessage from "#/components/form/FormMessage";
+import { Button, LinkButton } from "#/components/ui/Button";
+import { Field } from "#/components/ui/Field";
+import Fieldset from "#/components/ui/Fieldset";
+import { ParamsInput } from "#/components/ui/Input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
 } from "#/components/ui/Select";
+import Switch from "#/components/ui/Switch";
 import { genLinkKey } from "#/lib/link";
-import { getDomainsQuery } from "#/actions/domains/queries";
-import FormMessage from "#/components/form/FormMessage";
-import { Field } from "#/components/ui/Field";
-import { Button, LinkButton } from "#/components/ui/Button";
 
 export const Route = createFileRoute("/app/_app/links/new")({
   async loader({ context: { queryClient } }) {
@@ -46,15 +50,26 @@ function App() {
       domain: domains[0]?.domain || "",
       key: "",
       url: "",
+      expiration: {
+        date: "",
+        url: "",
+      },
+      password: "",
+      isCloaked: false,
     },
     validationLogic: revalidateLogic(),
     validators: {
-      onDynamic: createLinkSchema,
+      onDynamic: editLinkSchema,
     },
     async onSubmit({ value }) {
       await mutateAsync({ data: { ...value, key: value.key || defaultKey } });
     },
   });
+
+  const expirationDate = useStore(
+    form.store,
+    (state) => state.values.expiration.date,
+  );
 
   return (
     <div className="mx-auto max-w-4xl p-8">
@@ -106,7 +121,7 @@ function App() {
               <Field.Root className="min-w-0 flex-1">
                 <Field.Label>short url</Field.Label>
                 <div className="relative">
-                  <Field.Control
+                  <ParamsInput
                     value={field.state.value}
                     onValueChange={(v) => field.handleChange(v)}
                     placeholder={defaultKey}
@@ -126,7 +141,7 @@ function App() {
           {(field) => (
             <Field.Root>
               <Field.Label>destination url</Field.Label>
-              <Field.Control
+              <ParamsInput
                 value={field.state.value}
                 onValueChange={(v) => field.handleChange(v)}
                 placeholder="https://google.com"
@@ -135,6 +150,78 @@ function App() {
             </Field.Root>
           )}
         </form.Field>
+
+        <Fieldset legend="expiration">
+          <form.Field name="expiration.date">
+            {(field) => (
+              <Field.Root>
+                <Field.Label>expiration date</Field.Label>
+                <Field.Control
+                  type="datetime-local"
+                  value={field.state.value || ""}
+                  onValueChange={(v) => field.handleChange(v)}
+                />
+                <Field.Error field={field} />
+              </Field.Root>
+            )}
+          </form.Field>
+          <form.Field name="expiration.url">
+            {(field) => (
+              <Field.Root>
+                <Field.Label>expiration url</Field.Label>
+                <Field.Control
+                  value={field.state.value || ""}
+                  onValueChange={(v) => field.handleChange(v)}
+                  placeholder="https://google.com"
+                  disabled={!expirationDate}
+                />
+                <Field.Description>
+                  redirect here when the link expires (instead of a default
+                  'expired' page)
+                </Field.Description>
+                <Field.Error field={field} />
+              </Field.Root>
+            )}
+          </form.Field>
+        </Fieldset>
+
+        <Fieldset legend="password protect">
+          <form.Field name="password">
+            {(field) => (
+              <Field.Root>
+                <Field.Label>password</Field.Label>
+                <Field.Control
+                  type="password"
+                  value={field.state.value || ""}
+                  onValueChange={(v) => field.handleChange(v)}
+                  placeholder="••••••••"
+                />
+                <Field.Error field={field} />
+              </Field.Root>
+            )}
+          </form.Field>
+        </Fieldset>
+
+        <Fieldset legend="link cloaking">
+          <form.Field name="isCloaked">
+            {(field) => (
+              <Field.Root>
+                <Field.Label>is link cloaked</Field.Label>
+                <Switch
+                  checked={field.state.value}
+                  onCheckedChange={(v) => field.handleChange(v)}
+                />
+                <Field.Description>
+                  Renders the destination in an iframe, so your short link stays
+                  in the address bar.
+                  <br />
+                  Some sites' security policies may not allow this.
+                </Field.Description>
+                <Field.Error field={field} />
+              </Field.Root>
+            )}
+          </form.Field>
+        </Fieldset>
 
         <form.Subscribe
           selector={(state) => !state.isSubmitting && state.canSubmit}
