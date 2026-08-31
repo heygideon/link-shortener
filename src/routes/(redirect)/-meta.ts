@@ -28,6 +28,27 @@ function fetchWithTimeout(
       });
   });
 }
+function responseToTextWithTimeout(
+  response: Response,
+  timeout = 2000,
+): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject(new Error("Response reading timed out"));
+    }, timeout);
+
+    response
+      .text()
+      .then((text) => {
+        clearTimeout(timer);
+        resolve(text);
+      })
+      .catch((error) => {
+        clearTimeout(timer);
+        reject(error);
+      });
+  });
+}
 
 export async function getHtml(url: string) {
   try {
@@ -44,18 +65,30 @@ export async function getHtml(url: string) {
       return null;
     }
 
-    const text = await response.text();
-
-    // Check if the response contains Cloudflare's challenge page
-    if (
-      text.includes("challenge-platform") ||
-      text.includes("cf-browser-verification")
-    ) {
-      console.warn(`Cloudflare challenge page detected for: ${url}`);
+    // Skip parsing if the content is not text/html
+    const contentType = response.headers.get("content-type");
+    if (!contentType?.startsWith("text/html")) {
+      console.warn(`Skipping non-HTML for: ${url}`);
       return null;
     }
 
-    return text;
+    try {
+      const text = await responseToTextWithTimeout(response);
+
+      // Check if the response contains Cloudflare's challenge page
+      if (
+        text.includes("challenge-platform") ||
+        text.includes("cf-browser-verification")
+      ) {
+        console.warn(`Cloudflare challenge page detected for: ${url}`);
+        return null;
+      }
+
+      return text;
+    } catch (error) {
+      console.error(`Error reading response text for ${url}:`, error);
+      return null;
+    }
   } catch (error) {
     console.error(`Error fetching ${url}:`, error);
     return null;
