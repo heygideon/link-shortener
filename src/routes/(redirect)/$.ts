@@ -28,6 +28,10 @@ export const Route = createFileRoute("/(redirect)/$")({
         }
 
         const domain = new URL(request.url).hostname;
+        const searchParams = new URL(request.url).searchParams;
+
+        const searchPw = searchParams.get("pw");
+        searchParams.delete("pw");
 
         const link = await db.query.links.findFirst({
           where: {
@@ -41,7 +45,11 @@ export const Route = createFileRoute("/(redirect)/$")({
 
         if (link.expirationDate && new Date(link.expirationDate) < new Date()) {
           if (link.expirationUrl) {
-            return Response.redirect(new URL(link.expirationUrl), 302);
+            const expirationUrl = new URL(link.expirationUrl);
+            for (const [key, value] of searchParams.entries()) {
+              expirationUrl.searchParams.set(key, value);
+            }
+            return Response.redirect(expirationUrl, 302);
           } else {
             return Response.redirect(
               new URL(
@@ -55,8 +63,6 @@ export const Route = createFileRoute("/(redirect)/$")({
 
         if (link.password) {
           const cookie = getCookie(`${link.key}-password`);
-          const search = new URL(request.url).searchParams.get("pw");
-
           let passwordVerified = false;
 
           if (cookie) {
@@ -68,10 +74,10 @@ export const Route = createFileRoute("/(redirect)/$")({
               passwordVerified = true;
             }
           }
-          if (search) {
+          if (searchPw) {
             const searchVerified = await verifyPlainPassword(
               link.password,
-              search,
+              searchPw,
             );
             if (searchVerified) {
               setCookie(`${link.key}-password`, link.password, {
@@ -107,11 +113,16 @@ export const Route = createFileRoute("/(redirect)/$")({
           linkId: link.id,
         });
 
+        const redirectUrl = new URL(link.url);
+        for (const [key, value] of searchParams.entries()) {
+          redirectUrl.searchParams.set(key, value);
+        }
+
         if (link.isCloaked) {
           const meta = await getMetaTags(link.url);
           const html = renderToStaticMarkup(
             CloakedTemplate({
-              url: link.url,
+              url: redirectUrl.toString(),
               metaTags: meta,
             }),
           );
@@ -122,7 +133,7 @@ export const Route = createFileRoute("/(redirect)/$")({
           });
         }
 
-        return Response.redirect(new URL(link.url), 302);
+        return Response.redirect(redirectUrl, 302);
       },
     },
   },
