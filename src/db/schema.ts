@@ -32,6 +32,7 @@ export const domains = sqliteTable("domains", {
   userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  public: int("public", { mode: "boolean" }).notNull().default(false),
 
   createdAt: timestamps.createdAt,
 });

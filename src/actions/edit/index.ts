@@ -41,7 +41,7 @@ export const editLink = createServerFn()
     const domain = await db.query.domains.findFirst({
       where: {
         domain: data.domain,
-        userId: context.user.id,
+        OR: [{ userId: context.user.id }, { public: true }],
       },
     });
     if (!domain) {
