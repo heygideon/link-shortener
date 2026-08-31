@@ -36,7 +36,7 @@ export const Route = createFileRoute("/(redirect)/$")({
         const link = await db.query.links.findFirst({
           where: {
             domain,
-            key: params._splat,
+            key: params._splat.toLowerCase(),
           },
         });
         if (!link) {
