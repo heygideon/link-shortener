@@ -15,6 +15,8 @@ export const users = sqliteTable("users", {
   lastName: text("last_name").notNull(),
   slackId: text("slack_id").notNull(),
 
+  isAdmin: int("is_admin", { mode: "boolean" }).notNull().default(false),
+
   ...timestamps,
 });
 export const sessions = sqliteTable("sessions", {

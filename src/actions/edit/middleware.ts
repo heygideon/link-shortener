@@ -1,7 +1,7 @@
 import { createMiddleware } from "@tanstack/react-start";
 import z from "zod";
-import { requireAuth } from "../auth/middleware";
 import db from "#/db";
+import { requireAuth } from "../auth/middleware";
 
 export const withLink = createMiddleware({ type: "function" })
   .middleware([requireAuth])
@@ -14,7 +14,7 @@ export const withLink = createMiddleware({ type: "function" })
     const link = await db.query.links.findFirst({
       where: {
         id: data.id,
-        userId: context.user.id,
+        userId: context.user.isAdmin ? undefined : context.user.id,
       },
     });
 

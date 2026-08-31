@@ -19,12 +19,16 @@ export const getDomains = createServerFn()
             links,
             and(
               eq(links.domain, table.domain),
-              eq(links.userId, context.user.id),
+              context.user.isAdmin
+                ? undefined
+                : eq(links.userId, context.user.id),
             ),
           ),
       },
       where: {
-        OR: [{ userId: context.user.id }, { public: true }],
+        OR: context.user.isAdmin
+          ? undefined
+          : [{ userId: context.user.id }, { public: true }],
       },
     });
     return domains;

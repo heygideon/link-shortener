@@ -14,7 +14,9 @@ export const createLink = createServerFn({ method: "POST" })
     const domain = await db.query.domains.findFirst({
       where: {
         domain: data.domain,
-        OR: [{ userId: context.user.id }, { public: true }],
+        OR: context.user.isAdmin
+          ? []
+          : [{ userId: context.user.id }, { public: true }],
       },
     });
     if (!domain) {

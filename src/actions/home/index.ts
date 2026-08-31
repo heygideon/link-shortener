@@ -22,7 +22,7 @@ export const getLinks = createServerFn()
           db.$count(linkClicks, eq(linkClicks.linkId, table.id)),
       },
       where: {
-        userId: context.user.id,
+        userId: context.user.isAdmin ? undefined : context.user.id,
       },
     });
     return links;

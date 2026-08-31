@@ -14,7 +14,7 @@ export const getLink = createServerFn()
   .handler(async ({ context, data }) => {
     const link = await db.query.links.findFirst({
       where: {
-        userId: context.user.id,
+        userId: context.user.isAdmin ? undefined : context.user.id,
         domain: data.domain,
         key: data.key,
       },
@@ -34,7 +34,9 @@ export const editLink = createServerFn()
     const domain = await db.query.domains.findFirst({
       where: {
         domain: data.domain,
-        OR: [{ userId: context.user.id }, { public: true }],
+        OR: context.user.isAdmin
+          ? []
+          : [{ userId: context.user.id }, { public: true }],
       },
     });
     if (!domain) {
