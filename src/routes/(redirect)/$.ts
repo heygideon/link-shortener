@@ -5,14 +5,16 @@ import { linkClicks } from "#/db/schema";
 export const Route = createFileRoute("/(redirect)/$")({
   server: {
     handlers: {
-      async GET({ params }) {
+      async GET({ params, request }) {
         if (!params._splat) {
           return new Response("Link not found", { status: 404 });
         }
 
+        const domain = new URL(request.url).hostname;
+
         const link = await db.query.links.findFirst({
           where: {
-            domain: "heya.gdn",
+            domain,
             key: params._splat,
           },
         });
