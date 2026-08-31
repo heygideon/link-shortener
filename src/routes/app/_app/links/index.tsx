@@ -173,14 +173,20 @@ function App() {
                     <span>{link.clicks}</span>
                   </div>
                 </div>
-                <div className="mt-1.5 flex text-xs">
-                  <p className="text-neutral-400">
-                    -&gt; {withoutProtocol(link.url)}
+                <div className="mt-1.5 flex gap-2 text-xs">
+                  <p className="min-w-0 flex-1 truncate text-neutral-400">
+                    -&gt;{" "}
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      className="transition hover:text-white hover:underline"
+                    >
+                      {withoutProtocol(link.url)}
+                    </a>
                   </p>
-                  <div className="flex-1"></div>
                   <p
                     title={dayjs(link.createdAt).format("YYYY-MM-DD")}
-                    className="mr-2 text-neutral-400 underline decoration-dotted underline-offset-2"
+                    className="flex-none text-neutral-400 underline decoration-dotted underline-offset-2"
                   >
                     {dayjs(link.createdAt).fromNow()}
                   </p>
