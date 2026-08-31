@@ -16,7 +16,7 @@ export const getDomains = createServerFn()
         links: (table) => db.$count(links, eq(links.domain, table.domain)),
       },
       where: {
-        userId: context.user.id,
+        OR: [{ userId: context.user.id }, { public: true }],
       },
     });
     return domains;
