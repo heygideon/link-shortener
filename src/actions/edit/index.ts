@@ -1,11 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
+import z from "zod";
 import db from "#/db";
 import { links } from "#/db/schema";
-import { editLinkSchema } from "./schema";
-import { withLink } from "./middleware";
 import { requireAuth } from "../auth/middleware";
-import z from "zod";
+import { withLink } from "./middleware";
+import { editLinkSchema } from "./schema";
 
 export const getLink = createServerFn()
   .middleware([requireAuth])
@@ -16,14 +16,6 @@ export const getLink = createServerFn()
         userId: context.user.id,
         domain: data.domain,
         key: data.key,
-      },
-      columns: {
-        id: true,
-        domain: true,
-        key: true,
-        url: true,
-        archived: true,
-        createdAt: true,
       },
     });
 
@@ -55,6 +47,11 @@ export const editLink = createServerFn()
           domain: data.domain,
           key: data.key,
           url: data.url,
+
+          expirationDate: data.expiration.date || null,
+          expirationUrl: data.expiration.url || null,
+          password: data.password || null,
+          isCloaked: data.isCloaked,
         })
         .where(eq(links.id, context.link.id));
     } catch (_e) {

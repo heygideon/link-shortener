@@ -1,19 +1,21 @@
 import { revalidateLogic, useForm } from "@tanstack/react-form";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { getDomainsQuery } from "#/actions/domains/queries";
+import { deleteLink, editLink } from "#/actions/edit";
+import { getLinkQuery } from "#/actions/edit/queries";
+import { editLinkSchema } from "#/actions/edit/schema";
+import FormMessage from "#/components/form/FormMessage";
+import { Button, LinkButton } from "#/components/ui/Button";
+import { Field } from "#/components/ui/Field";
+import Fieldset from "#/components/ui/Fieldset";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
 } from "#/components/ui/Select";
-import { getDomainsQuery } from "#/actions/domains/queries";
-import FormMessage from "#/components/form/FormMessage";
-import { Field } from "#/components/ui/Field";
-import { getLinkQuery } from "#/actions/edit/queries";
-import { editLinkSchema } from "#/actions/edit/schema";
-import { deleteLink, editLink } from "#/actions/edit";
-import { Button, LinkButton } from "#/components/ui/Button";
+import Switch from "#/components/ui/Switch";
 
 export const Route = createFileRoute("/app/links/$domain/$")({
   async loader({ params, context: { queryClient } }) {
@@ -93,6 +95,12 @@ function App() {
       domain: link.domain,
       key: link.key,
       url: link.url,
+      expiration: {
+        date: link.expirationDate ? link.expirationDate.toISOString() : "",
+        url: link.expirationUrl || "",
+      },
+      password: link.password || "",
+      isCloaked: link.isCloaked,
     },
     validationLogic: revalidateLogic(),
     validators: {
@@ -183,6 +191,77 @@ function App() {
             </Field.Root>
           )}
         </form.Field>
+
+        <Fieldset legend="expiration">
+          <form.Field name="expiration.date">
+            {(field) => (
+              <Field.Root>
+                <Field.Label>expiration date (utc time)</Field.Label>
+                <Field.Control
+                  type="datetime-local"
+                  value={field.state.value || ""}
+                  onValueChange={(v) => field.handleChange(v)}
+                />
+                <Field.Error field={field} />
+              </Field.Root>
+            )}
+          </form.Field>
+          <form.Field name="expiration.url">
+            {(field) => (
+              <Field.Root>
+                <Field.Label>expiration url</Field.Label>
+                <Field.Control
+                  value={field.state.value || ""}
+                  onValueChange={(v) => field.handleChange(v)}
+                  placeholder="https://google.com"
+                />
+                <Field.Description>
+                  redirect here when the link expires (instead of a default
+                  'expired' page)
+                </Field.Description>
+                <Field.Error field={field} />
+              </Field.Root>
+            )}
+          </form.Field>
+        </Fieldset>
+
+        <Fieldset legend="password protect">
+          <form.Field name="password">
+            {(field) => (
+              <Field.Root>
+                <Field.Label>password</Field.Label>
+                <Field.Control
+                  type="password"
+                  value={field.state.value || ""}
+                  onValueChange={(v) => field.handleChange(v)}
+                  placeholder="••••••••"
+                />
+                <Field.Error field={field} />
+              </Field.Root>
+            )}
+          </form.Field>
+        </Fieldset>
+
+        <Fieldset legend="link cloaking">
+          <form.Field name="isCloaked">
+            {(field) => (
+              <Field.Root>
+                <Field.Label>is link cloaked</Field.Label>
+                <Switch
+                  checked={field.state.value}
+                  onCheckedChange={(v) => field.handleChange(v)}
+                />
+                <Field.Description>
+                  Renders the destination in an iframe, so your short link stays
+                  in the address bar.
+                  <br />
+                  Some sites' security policies may not allow this.
+                </Field.Description>
+                <Field.Error field={field} />
+              </Field.Root>
+            )}
+          </form.Field>
+        </Fieldset>
 
         <form.Subscribe
           selector={(state) => !state.isSubmitting && state.canSubmit}

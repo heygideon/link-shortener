@@ -54,6 +54,11 @@ export const links = sqliteTable(
       .references(() => users.id, { onDelete: "cascade" }),
     archived: int("archived", { mode: "boolean" }).notNull().default(false),
 
+    expirationDate: int("expiration_date", { mode: "timestamp" }),
+    expirationUrl: text("expiration_url"),
+    password: text("password"),
+    isCloaked: int("is_cloaked", { mode: "boolean" }).notNull().default(false),
+
     ...timestamps,
   },
   (table) => [uniqueIndex("domain_key_idx").on(table.domain, table.key)],
