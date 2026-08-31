@@ -3,7 +3,7 @@ import { setCookie } from "@tanstack/react-start/server";
 import { nanoid } from "nanoid";
 import { joinURL, withQuery } from "ufo";
 
-const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+export const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : process.env.BASE_URL || "http://localhost:3000";
 

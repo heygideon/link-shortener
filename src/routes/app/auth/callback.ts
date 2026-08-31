@@ -1,10 +1,11 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { getCookie } from "@tanstack/react-start/server";
-import { joinURL, withQuery } from "ufo";
+import { joinURL } from "ufo";
 import { ofetch } from "ofetch";
-import { createSession, useAppSession } from "#/lib/session";
+import { createSession } from "#/lib/session";
 import db from "#/db";
 import { users } from "#/db/schema";
+import { baseUrl } from ".";
 
 interface TokenResponse {
   access_token: string;
@@ -53,10 +54,7 @@ export const Route = createFileRoute("/app/auth/callback")({
               body: {
                 client_id: process.env.HACKCLUB_CLIENT_ID,
                 client_secret: process.env.HACKCLUB_CLIENT_SECRET,
-                redirect_uri: joinURL(
-                  process.env.BASE_URL || "http://localhost:3000",
-                  "/app/auth/callback",
-                ),
+                redirect_uri: joinURL(baseUrl, "/app/auth/callback"),
                 code,
                 grant_type: "authorization_code",
               },
