@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import type { getDomains } from "#/actions/domains";
 import { getDomainsQuery } from "#/actions/domains/queries";
 
-export const Route = createFileRoute("/app/domains/")({
+export const Route = createFileRoute("/app/_app/domains/")({
   async loader({ context: { queryClient } }) {
     await queryClient.ensureQueryData(getDomainsQuery());
   },

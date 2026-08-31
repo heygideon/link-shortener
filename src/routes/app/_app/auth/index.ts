@@ -7,7 +7,7 @@ export const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : process.env.BASE_URL || "http://localhost:3000";
 
-export const Route = createFileRoute("/app/auth/")({
+export const Route = createFileRoute("/app/_app/auth/")({
   server: {
     handlers: {
       GET: async () => {

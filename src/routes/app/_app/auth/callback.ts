@@ -30,7 +30,7 @@ interface UserInfoResponse {
   ysws_eligible: boolean;
 }
 
-export const Route = createFileRoute("/app/auth/callback")({
+export const Route = createFileRoute("/app/_app/auth/callback")({
   server: {
     handlers: {
       GET: async ({ request }) => {

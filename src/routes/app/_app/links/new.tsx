@@ -15,7 +15,7 @@ import FormMessage from "#/components/form/FormMessage";
 import { Field } from "#/components/ui/Field";
 import { Button, LinkButton } from "#/components/ui/Button";
 
-export const Route = createFileRoute("/app/links/new")({
+export const Route = createFileRoute("/app/_app/links/new")({
   async loader({ context: { queryClient } }) {
     await queryClient.ensureQueryData(getDomainsQuery());
     return { defaultKey: genLinkKey() };

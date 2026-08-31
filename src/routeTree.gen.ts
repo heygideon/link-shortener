@@ -9,112 +9,130 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AppRouteRouteImport } from './routes/app/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as redirectSplatRouteImport } from './routes/(redirect)/$'
-import { Route as AppLinksIndexRouteImport } from './routes/app/links/index'
-import { Route as AppDomainsIndexRouteImport } from './routes/app/domains/index'
-import { Route as AppAuthIndexRouteImport } from './routes/app/auth/index'
-import { Route as AppAnalyticsIndexRouteImport } from './routes/app/analytics/index'
-import { Route as AppLinksNewRouteImport } from './routes/app/links/new'
-import { Route as AppAuthCallbackRouteImport } from './routes/app/auth/callback'
-import { Route as AppLinksDomainSplatRouteImport } from './routes/app/links/$domain.$'
+import { Route as AppAppRouteRouteImport } from './routes/app/_app/route'
+import { Route as AppAppIndexRouteImport } from './routes/app/_app/index'
+import { Route as AppTemplatesPasswordRouteImport } from './routes/app/_templates/password'
+import { Route as AppTemplatesExpiredRouteImport } from './routes/app/_templates/expired'
+import { Route as AppAppLinksIndexRouteImport } from './routes/app/_app/links/index'
+import { Route as AppAppDomainsIndexRouteImport } from './routes/app/_app/domains/index'
+import { Route as AppAppAuthIndexRouteImport } from './routes/app/_app/auth/index'
+import { Route as AppAppAnalyticsIndexRouteImport } from './routes/app/_app/analytics/index'
+import { Route as AppAppLinksNewRouteImport } from './routes/app/_app/links/new'
+import { Route as AppAppAuthCallbackRouteImport } from './routes/app/_app/auth/callback'
+import { Route as AppAppLinksDomainSplatRouteImport } from './routes/app/_app/links/$domain.$'
 
-const AppRouteRoute = AppRouteRouteImport.update({
-  id: '/app',
-  path: '/app',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
-const AppIndexRoute = AppIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AppRouteRoute,
 } as any)
 const redirectSplatRoute = redirectSplatRouteImport.update({
   id: '/(redirect)/$',
   path: '/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppLinksIndexRoute = AppLinksIndexRouteImport.update({
+const AppAppRouteRoute = AppAppRouteRouteImport.update({
+  id: '/app/_app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppAppIndexRoute = AppAppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppAppRouteRoute,
+} as any)
+const AppTemplatesPasswordRoute = AppTemplatesPasswordRouteImport.update({
+  id: '/app/_templates/password',
+  path: '/app/password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppTemplatesExpiredRoute = AppTemplatesExpiredRouteImport.update({
+  id: '/app/_templates/expired',
+  path: '/app/expired',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppAppLinksIndexRoute = AppAppLinksIndexRouteImport.update({
   id: '/links/',
   path: '/links/',
-  getParentRoute: () => AppRouteRoute,
+  getParentRoute: () => AppAppRouteRoute,
 } as any)
-const AppDomainsIndexRoute = AppDomainsIndexRouteImport.update({
+const AppAppDomainsIndexRoute = AppAppDomainsIndexRouteImport.update({
   id: '/domains/',
   path: '/domains/',
-  getParentRoute: () => AppRouteRoute,
+  getParentRoute: () => AppAppRouteRoute,
 } as any)
-const AppAuthIndexRoute = AppAuthIndexRouteImport.update({
+const AppAppAuthIndexRoute = AppAppAuthIndexRouteImport.update({
   id: '/auth/',
   path: '/auth/',
-  getParentRoute: () => AppRouteRoute,
+  getParentRoute: () => AppAppRouteRoute,
 } as any)
-const AppAnalyticsIndexRoute = AppAnalyticsIndexRouteImport.update({
+const AppAppAnalyticsIndexRoute = AppAppAnalyticsIndexRouteImport.update({
   id: '/analytics/',
   path: '/analytics/',
-  getParentRoute: () => AppRouteRoute,
+  getParentRoute: () => AppAppRouteRoute,
 } as any)
-const AppLinksNewRoute = AppLinksNewRouteImport.update({
+const AppAppLinksNewRoute = AppAppLinksNewRouteImport.update({
   id: '/links/new',
   path: '/links/new',
-  getParentRoute: () => AppRouteRoute,
+  getParentRoute: () => AppAppRouteRoute,
 } as any)
-const AppAuthCallbackRoute = AppAuthCallbackRouteImport.update({
+const AppAppAuthCallbackRoute = AppAppAuthCallbackRouteImport.update({
   id: '/auth/callback',
   path: '/auth/callback',
-  getParentRoute: () => AppRouteRoute,
+  getParentRoute: () => AppAppRouteRoute,
 } as any)
-const AppLinksDomainSplatRoute = AppLinksDomainSplatRouteImport.update({
+const AppAppLinksDomainSplatRoute = AppAppLinksDomainSplatRouteImport.update({
   id: '/links/$domain/$',
   path: '/links/$domain/$',
-  getParentRoute: () => AppRouteRoute,
+  getParentRoute: () => AppAppRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/app': typeof AppRouteRouteWithChildren
+  '/app': typeof AppAppRouteRouteWithChildren
   '/$': typeof redirectSplatRoute
-  '/app/': typeof AppIndexRoute
-  '/app/auth/callback': typeof AppAuthCallbackRoute
-  '/app/links/new': typeof AppLinksNewRoute
-  '/app/analytics/': typeof AppAnalyticsIndexRoute
-  '/app/auth/': typeof AppAuthIndexRoute
-  '/app/domains/': typeof AppDomainsIndexRoute
-  '/app/links/': typeof AppLinksIndexRoute
-  '/app/links/$domain/$': typeof AppLinksDomainSplatRoute
+  '/app/expired': typeof AppTemplatesExpiredRoute
+  '/app/password': typeof AppTemplatesPasswordRoute
+  '/app/': typeof AppAppIndexRoute
+  '/app/auth/callback': typeof AppAppAuthCallbackRoute
+  '/app/links/new': typeof AppAppLinksNewRoute
+  '/app/analytics/': typeof AppAppAnalyticsIndexRoute
+  '/app/auth/': typeof AppAppAuthIndexRoute
+  '/app/domains/': typeof AppAppDomainsIndexRoute
+  '/app/links/': typeof AppAppLinksIndexRoute
+  '/app/links/$domain/$': typeof AppAppLinksDomainSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof redirectSplatRoute
-  '/app': typeof AppIndexRoute
-  '/app/auth/callback': typeof AppAuthCallbackRoute
-  '/app/links/new': typeof AppLinksNewRoute
-  '/app/analytics': typeof AppAnalyticsIndexRoute
-  '/app/auth': typeof AppAuthIndexRoute
-  '/app/domains': typeof AppDomainsIndexRoute
-  '/app/links': typeof AppLinksIndexRoute
-  '/app/links/$domain/$': typeof AppLinksDomainSplatRoute
+  '/app/expired': typeof AppTemplatesExpiredRoute
+  '/app/password': typeof AppTemplatesPasswordRoute
+  '/app': typeof AppAppIndexRoute
+  '/app/auth/callback': typeof AppAppAuthCallbackRoute
+  '/app/links/new': typeof AppAppLinksNewRoute
+  '/app/analytics': typeof AppAppAnalyticsIndexRoute
+  '/app/auth': typeof AppAppAuthIndexRoute
+  '/app/domains': typeof AppAppDomainsIndexRoute
+  '/app/links': typeof AppAppLinksIndexRoute
+  '/app/links/$domain/$': typeof AppAppLinksDomainSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/app': typeof AppRouteRouteWithChildren
+  '/app/_app': typeof AppAppRouteRouteWithChildren
   '/(redirect)/$': typeof redirectSplatRoute
-  '/app/': typeof AppIndexRoute
-  '/app/auth/callback': typeof AppAuthCallbackRoute
-  '/app/links/new': typeof AppLinksNewRoute
-  '/app/analytics/': typeof AppAnalyticsIndexRoute
-  '/app/auth/': typeof AppAuthIndexRoute
-  '/app/domains/': typeof AppDomainsIndexRoute
-  '/app/links/': typeof AppLinksIndexRoute
-  '/app/links/$domain/$': typeof AppLinksDomainSplatRoute
+  '/app/_templates/expired': typeof AppTemplatesExpiredRoute
+  '/app/_templates/password': typeof AppTemplatesPasswordRoute
+  '/app/_app/': typeof AppAppIndexRoute
+  '/app/_app/auth/callback': typeof AppAppAuthCallbackRoute
+  '/app/_app/links/new': typeof AppAppLinksNewRoute
+  '/app/_app/analytics/': typeof AppAppAnalyticsIndexRoute
+  '/app/_app/auth/': typeof AppAppAuthIndexRoute
+  '/app/_app/domains/': typeof AppAppDomainsIndexRoute
+  '/app/_app/links/': typeof AppAppLinksIndexRoute
+  '/app/_app/links/$domain/$': typeof AppAppLinksDomainSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -122,6 +140,8 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/$'
+    | '/app/expired'
+    | '/app/password'
     | '/app/'
     | '/app/auth/callback'
     | '/app/links/new'
@@ -134,6 +154,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$'
+    | '/app/expired'
+    | '/app/password'
     | '/app'
     | '/app/auth/callback'
     | '/app/links/new'
@@ -145,46 +167,36 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/app'
+    | '/app/_app'
     | '/(redirect)/$'
-    | '/app/'
-    | '/app/auth/callback'
-    | '/app/links/new'
-    | '/app/analytics/'
-    | '/app/auth/'
-    | '/app/domains/'
-    | '/app/links/'
-    | '/app/links/$domain/$'
+    | '/app/_templates/expired'
+    | '/app/_templates/password'
+    | '/app/_app/'
+    | '/app/_app/auth/callback'
+    | '/app/_app/links/new'
+    | '/app/_app/analytics/'
+    | '/app/_app/auth/'
+    | '/app/_app/domains/'
+    | '/app/_app/links/'
+    | '/app/_app/links/$domain/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppRouteRoute: typeof AppRouteRouteWithChildren
+  AppAppRouteRoute: typeof AppAppRouteRouteWithChildren
   redirectSplatRoute: typeof redirectSplatRoute
+  AppTemplatesExpiredRoute: typeof AppTemplatesExpiredRoute
+  AppTemplatesPasswordRoute: typeof AppTemplatesPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/app': {
-      id: '/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/app/': {
-      id: '/app/'
-      path: '/'
-      fullPath: '/app/'
-      preLoaderRoute: typeof AppIndexRouteImport
-      parentRoute: typeof AppRouteRoute
     }
     '/(redirect)/$': {
       id: '/(redirect)/$'
@@ -193,88 +205,118 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof redirectSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app/links/': {
-      id: '/app/links/'
+    '/app/_app': {
+      id: '/app/_app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppAppRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/_app/': {
+      id: '/app/_app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppAppIndexRouteImport
+      parentRoute: typeof AppAppRouteRoute
+    }
+    '/app/_templates/password': {
+      id: '/app/_templates/password'
+      path: '/app/password'
+      fullPath: '/app/password'
+      preLoaderRoute: typeof AppTemplatesPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/_templates/expired': {
+      id: '/app/_templates/expired'
+      path: '/app/expired'
+      fullPath: '/app/expired'
+      preLoaderRoute: typeof AppTemplatesExpiredRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/_app/links/': {
+      id: '/app/_app/links/'
       path: '/links'
       fullPath: '/app/links/'
-      preLoaderRoute: typeof AppLinksIndexRouteImport
-      parentRoute: typeof AppRouteRoute
+      preLoaderRoute: typeof AppAppLinksIndexRouteImport
+      parentRoute: typeof AppAppRouteRoute
     }
-    '/app/domains/': {
-      id: '/app/domains/'
+    '/app/_app/domains/': {
+      id: '/app/_app/domains/'
       path: '/domains'
       fullPath: '/app/domains/'
-      preLoaderRoute: typeof AppDomainsIndexRouteImport
-      parentRoute: typeof AppRouteRoute
+      preLoaderRoute: typeof AppAppDomainsIndexRouteImport
+      parentRoute: typeof AppAppRouteRoute
     }
-    '/app/auth/': {
-      id: '/app/auth/'
+    '/app/_app/auth/': {
+      id: '/app/_app/auth/'
       path: '/auth'
       fullPath: '/app/auth/'
-      preLoaderRoute: typeof AppAuthIndexRouteImport
-      parentRoute: typeof AppRouteRoute
+      preLoaderRoute: typeof AppAppAuthIndexRouteImport
+      parentRoute: typeof AppAppRouteRoute
     }
-    '/app/analytics/': {
-      id: '/app/analytics/'
+    '/app/_app/analytics/': {
+      id: '/app/_app/analytics/'
       path: '/analytics'
       fullPath: '/app/analytics/'
-      preLoaderRoute: typeof AppAnalyticsIndexRouteImport
-      parentRoute: typeof AppRouteRoute
+      preLoaderRoute: typeof AppAppAnalyticsIndexRouteImport
+      parentRoute: typeof AppAppRouteRoute
     }
-    '/app/links/new': {
-      id: '/app/links/new'
+    '/app/_app/links/new': {
+      id: '/app/_app/links/new'
       path: '/links/new'
       fullPath: '/app/links/new'
-      preLoaderRoute: typeof AppLinksNewRouteImport
-      parentRoute: typeof AppRouteRoute
+      preLoaderRoute: typeof AppAppLinksNewRouteImport
+      parentRoute: typeof AppAppRouteRoute
     }
-    '/app/auth/callback': {
-      id: '/app/auth/callback'
+    '/app/_app/auth/callback': {
+      id: '/app/_app/auth/callback'
       path: '/auth/callback'
       fullPath: '/app/auth/callback'
-      preLoaderRoute: typeof AppAuthCallbackRouteImport
-      parentRoute: typeof AppRouteRoute
+      preLoaderRoute: typeof AppAppAuthCallbackRouteImport
+      parentRoute: typeof AppAppRouteRoute
     }
-    '/app/links/$domain/$': {
-      id: '/app/links/$domain/$'
+    '/app/_app/links/$domain/$': {
+      id: '/app/_app/links/$domain/$'
       path: '/links/$domain/$'
       fullPath: '/app/links/$domain/$'
-      preLoaderRoute: typeof AppLinksDomainSplatRouteImport
-      parentRoute: typeof AppRouteRoute
+      preLoaderRoute: typeof AppAppLinksDomainSplatRouteImport
+      parentRoute: typeof AppAppRouteRoute
     }
   }
 }
 
-interface AppRouteRouteChildren {
-  AppIndexRoute: typeof AppIndexRoute
-  AppAuthCallbackRoute: typeof AppAuthCallbackRoute
-  AppLinksNewRoute: typeof AppLinksNewRoute
-  AppAnalyticsIndexRoute: typeof AppAnalyticsIndexRoute
-  AppAuthIndexRoute: typeof AppAuthIndexRoute
-  AppDomainsIndexRoute: typeof AppDomainsIndexRoute
-  AppLinksIndexRoute: typeof AppLinksIndexRoute
-  AppLinksDomainSplatRoute: typeof AppLinksDomainSplatRoute
+interface AppAppRouteRouteChildren {
+  AppAppIndexRoute: typeof AppAppIndexRoute
+  AppAppAuthCallbackRoute: typeof AppAppAuthCallbackRoute
+  AppAppLinksNewRoute: typeof AppAppLinksNewRoute
+  AppAppAnalyticsIndexRoute: typeof AppAppAnalyticsIndexRoute
+  AppAppAuthIndexRoute: typeof AppAppAuthIndexRoute
+  AppAppDomainsIndexRoute: typeof AppAppDomainsIndexRoute
+  AppAppLinksIndexRoute: typeof AppAppLinksIndexRoute
+  AppAppLinksDomainSplatRoute: typeof AppAppLinksDomainSplatRoute
 }
 
-const AppRouteRouteChildren: AppRouteRouteChildren = {
-  AppIndexRoute: AppIndexRoute,
-  AppAuthCallbackRoute: AppAuthCallbackRoute,
-  AppLinksNewRoute: AppLinksNewRoute,
-  AppAnalyticsIndexRoute: AppAnalyticsIndexRoute,
-  AppAuthIndexRoute: AppAuthIndexRoute,
-  AppDomainsIndexRoute: AppDomainsIndexRoute,
-  AppLinksIndexRoute: AppLinksIndexRoute,
-  AppLinksDomainSplatRoute: AppLinksDomainSplatRoute,
+const AppAppRouteRouteChildren: AppAppRouteRouteChildren = {
+  AppAppIndexRoute: AppAppIndexRoute,
+  AppAppAuthCallbackRoute: AppAppAuthCallbackRoute,
+  AppAppLinksNewRoute: AppAppLinksNewRoute,
+  AppAppAnalyticsIndexRoute: AppAppAnalyticsIndexRoute,
+  AppAppAuthIndexRoute: AppAppAuthIndexRoute,
+  AppAppDomainsIndexRoute: AppAppDomainsIndexRoute,
+  AppAppLinksIndexRoute: AppAppLinksIndexRoute,
+  AppAppLinksDomainSplatRoute: AppAppLinksDomainSplatRoute,
 }
 
-const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
-  AppRouteRouteChildren,
+const AppAppRouteRouteWithChildren = AppAppRouteRoute._addFileChildren(
+  AppAppRouteRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppRouteRoute: AppRouteRouteWithChildren,
+  AppAppRouteRoute: AppAppRouteRouteWithChildren,
   redirectSplatRoute: redirectSplatRoute,
+  AppTemplatesExpiredRoute: AppTemplatesExpiredRoute,
+  AppTemplatesPasswordRoute: AppTemplatesPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

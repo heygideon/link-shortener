@@ -12,7 +12,7 @@ const nav = [
   { label: "analytics", value: "/app/analytics" },
 ] as const;
 
-export const Route = createFileRoute("/app")({
+export const Route = createFileRoute("/app/_app")({
   async beforeLoad({ context }) {
     if (!context.user) {
       throw redirect({ to: "/" });

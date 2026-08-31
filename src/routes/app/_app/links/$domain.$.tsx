@@ -1,6 +1,7 @@
 import { revalidateLogic, useForm } from "@tanstack/react-form";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import dayjs from "dayjs";
 import { getDomainsQuery } from "#/actions/domains/queries";
 import { deleteLink, editLink } from "#/actions/edit";
 import { getLinkQuery } from "#/actions/edit/queries";
@@ -17,7 +18,7 @@ import {
 } from "#/components/ui/Select";
 import Switch from "#/components/ui/Switch";
 
-export const Route = createFileRoute("/app/links/$domain/$")({
+export const Route = createFileRoute("/app/_app/links/$domain/$")({
   async loader({ params, context: { queryClient } }) {
     await Promise.all([
       queryClient.ensureQueryData(getDomainsQuery()),
@@ -96,7 +97,9 @@ function App() {
       key: link.key,
       url: link.url,
       expiration: {
-        date: link.expirationDate ? link.expirationDate.toISOString() : "",
+        date: link.expirationDate
+          ? dayjs(link.expirationDate).format("YYYY-MM-DDTHH:mm")
+          : "",
         url: link.expirationUrl || "",
       },
       password: link.password || "",
@@ -196,7 +199,7 @@ function App() {
           <form.Field name="expiration.date">
             {(field) => (
               <Field.Root>
-                <Field.Label>expiration date (utc time)</Field.Label>
+                <Field.Label>expiration date</Field.Label>
                 <Field.Control
                   type="datetime-local"
                   value={field.state.value || ""}

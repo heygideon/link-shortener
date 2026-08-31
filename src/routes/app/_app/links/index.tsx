@@ -73,7 +73,7 @@ const sortOptions = [
 ] as const satisfies SortOption[];
 const sortValues = sortOptions.map((opt) => opt.value);
 
-export const Route = createFileRoute("/app/links/")({
+export const Route = createFileRoute("/app/_app/links/")({
   validateSearch: z.object({
     sort: z.enum(sortValues).default("newest-first").catch("newest-first"),
     search: z.string().optional().catch(undefined),
