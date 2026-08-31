@@ -15,6 +15,7 @@ export const getLinks = createServerFn()
         url: true,
         archived: true,
         createdAt: true,
+        pattern: true,
       },
       extras: {
         clicks: (table) =>

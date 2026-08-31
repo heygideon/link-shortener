@@ -49,6 +49,10 @@ export const links = sqliteTable(
     key: text("key").notNull(),
     url: text("url").notNull(),
 
+    // for dynamic links
+    normalisedKey: text("normalised_key").unique(),
+    pattern: text("pattern"),
+
     userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),

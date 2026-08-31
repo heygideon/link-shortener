@@ -10,6 +10,7 @@ import FormMessage from "#/components/form/FormMessage";
 import { Button, LinkButton } from "#/components/ui/Button";
 import { Field } from "#/components/ui/Field";
 import Fieldset from "#/components/ui/Fieldset";
+import { ParamsInput } from "#/components/ui/Input";
 import {
   Select,
   SelectContent,
@@ -171,7 +172,7 @@ function App() {
               <Field.Root className="min-w-0 flex-1">
                 <Field.Label>short url</Field.Label>
                 <div className="relative">
-                  <Field.Control
+                  <ParamsInput
                     value={field.state.value}
                     onValueChange={(v) => field.handleChange(v)}
                     className="pl-4"
@@ -190,7 +191,7 @@ function App() {
           {(field) => (
             <Field.Root>
               <Field.Label>destination url</Field.Label>
-              <Field.Control
+              <ParamsInput
                 value={field.state.value}
                 onValueChange={(v) => field.handleChange(v)}
                 placeholder="https://google.com"

@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import z from "zod";
 import db from "#/db";
 import { links } from "#/db/schema";
+import { getDynamicLinkData } from "#/lib/link";
 import { requireAuth } from "../auth/middleware";
 import { withLink } from "./middleware";
 import { editLinkSchema } from "./schema";
@@ -44,6 +45,12 @@ export const editLink = createServerFn()
       data.expiration.url = "";
     }
 
+    const { normalisedKey, pattern } = getDynamicLinkData(data.key);
+
+    if (pattern && domain.userId !== context.user.id) {
+      throw new Error("Dynamic links are not allowed on public domains");
+    }
+
     try {
       await db
         .update(links)
@@ -51,6 +58,8 @@ export const editLink = createServerFn()
           domain: data.domain,
           key: data.key,
           url: data.url,
+          normalisedKey,
+          pattern,
 
           expirationDate: data.expiration.date || null,
           expirationUrl: data.expiration.url || null,
