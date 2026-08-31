@@ -1,5 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import z from "zod";
+import { Button } from "#/components/ui/Button";
 
 export const Route = createFileRoute("/")({
   validateSearch: z.object({
@@ -15,6 +16,7 @@ export const Route = createFileRoute("/")({
 
 function RouteComponent() {
   const { auth_error } = Route.useSearch();
+  const navigate = Route.useNavigate();
 
   return (
     <div className="mx-auto max-w-4xl p-8">
@@ -27,6 +29,12 @@ function RouteComponent() {
       <p className="mt-1 text-sm text-neutral-400">
         a radically simple link shortener.
       </p>
+      <Button
+        className="mt-4"
+        onClick={() => navigate({ to: "/app/auth", reloadDocument: true })}
+      >
+        [login with hack club]
+      </Button>
     </div>
   );
 }
