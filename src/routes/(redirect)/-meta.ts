@@ -153,10 +153,11 @@ const generateFallbackMetadata = (url: string) => {
     // Clean up the path for title
     const pathParts = path.split("/").filter(Boolean);
     const lastPathPart = pathParts[pathParts.length - 1] || "";
-    const formattedPath = lastPathPart
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
+
+    let formattedPath = lastPathPart;
+    try {
+      formattedPath = decodeURIComponent(lastPathPart);
+    } catch (_e) {}
 
     return {
       title: formattedPath || hostname.replace(/^www\./, ""),
