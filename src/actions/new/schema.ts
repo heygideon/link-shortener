@@ -12,5 +12,5 @@ export const createLinkSchema = z.object({
     .toLowerCase()
     .transform((key) => key.split("/").filter(Boolean).join("/"))
     .refine((key) => !key.startsWith("app"), "Cannot start with /app"),
-  url: z.url("Invalid URL"),
+  url: z.httpUrl("Invalid URL"),
 });

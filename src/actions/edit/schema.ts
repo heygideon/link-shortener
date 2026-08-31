@@ -13,19 +13,23 @@ export const editLinkSchema = z.object({
     .toLowerCase()
     .transform((key) => key.split("/").filter(Boolean).join("/"))
     .refine((key) => !key.startsWith("app"), "Cannot start with /app"),
-  url: z.url("Invalid URL"),
+  url: z.httpUrl("Invalid URL"),
 
   expiration: z
     .object({
       date: z.coerce.date<string>().or(z.literal("")),
-      url: z.url("Invalid URL").or(z.literal("")),
+      url: z.string().trim(),
     })
     .superRefine((val, ctx) => {
-      if (val.url && !val.date) {
+      if (
+        val.date &&
+        z.httpUrl("Invalid URL").safeParse(val.url).success === false
+      ) {
         ctx.addIssue({
-          code: "custom",
-          message: "Expiration date is required if expiration URL is set",
-          path: ["date"],
+          code: "invalid_format",
+          format: "url",
+          message: "Invalid URL",
+          path: ["url"],
         });
       }
     }),

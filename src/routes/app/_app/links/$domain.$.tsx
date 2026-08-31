@@ -1,6 +1,6 @@
-import { revalidateLogic, useForm } from "@tanstack/react-form";
+import { revalidateLogic, useForm, useStore } from "@tanstack/react-form";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import dayjs from "dayjs";
 import { getDomainsQuery } from "#/actions/domains/queries";
 import { deleteLink, editLink } from "#/actions/edit";
@@ -116,6 +116,11 @@ function App() {
     },
   });
 
+  const expirationDate = useStore(
+    form.store,
+    (state) => state.values.expiration.date,
+  );
+
   return (
     <div className="mx-auto max-w-4xl p-8">
       <div className="mb-1.5 flex justify-between">
@@ -217,6 +222,7 @@ function App() {
                   value={field.state.value || ""}
                   onValueChange={(v) => field.handleChange(v)}
                   placeholder="https://google.com"
+                  disabled={!expirationDate}
                 />
                 <Field.Description>
                   redirect here when the link expires (instead of a default

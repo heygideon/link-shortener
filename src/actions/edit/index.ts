@@ -40,6 +40,10 @@ export const editLink = createServerFn()
       throw new Error(`Domain ${data.domain} not linked`);
     }
 
+    if (!data.expiration.date) {
+      data.expiration.url = "";
+    }
+
     try {
       await db
         .update(links)
