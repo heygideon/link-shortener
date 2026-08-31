@@ -3,6 +3,10 @@ import { setCookie } from "@tanstack/react-start/server";
 import { nanoid } from "nanoid";
 import { joinURL, withQuery } from "ufo";
 
+const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : process.env.BASE_URL || "http://localhost:3000";
+
 export const Route = createFileRoute("/app/auth/")({
   server: {
     handlers: {
@@ -21,10 +25,7 @@ export const Route = createFileRoute("/app/auth/")({
           "https://auth.hackclub.com/oauth/authorize",
           {
             client_id: process.env.HACKCLUB_CLIENT_ID,
-            redirect_uri: joinURL(
-              process.env.BASE_URL || "http://localhost:3000",
-              "/app/auth/callback",
-            ),
+            redirect_uri: joinURL(baseUrl, "/app/auth/callback"),
             response_type: "code",
             scope: "openid profile email slack_id verification_status",
             state,
