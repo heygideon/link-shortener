@@ -19,6 +19,82 @@ export async function verifyPlainPassword(one: string, two: string) {
   return timingSafeEqual(Buffer.from(oneHash), Buffer.from(twoHash));
 }
 
+async function getLink(domain: string, key: string) {
+  const parts = key.split("/");
+  const startsWithOpts = parts.map((_, idx) =>
+    parts.slice(0, idx + 1).join("/"),
+  );
+
+  const [staticLink, dynamicLinks] = await Promise.all([
+    db.query.links.findFirst({
+      where: {
+        domain,
+        key: key.toLowerCase(),
+      },
+    }),
+    db.query.links.findMany({
+      where: {
+        domain,
+        OR: startsWithOpts.map((opt) => ({
+          key: {
+            like: `${opt.toLowerCase()}%`,
+          },
+        })),
+      },
+    }),
+  ]);
+  if (staticLink) {
+    console.log("Static:", `${staticLink.domain}/${staticLink.key}`);
+    return staticLink;
+  }
+
+  for (const dynamicLink of dynamicLinks) {
+    if (!dynamicLink.pattern) continue;
+
+    const regex = new RegExp(dynamicLink.pattern);
+    const match = key.match(regex);
+    if (match) {
+      const dynamicKeys = dynamicLink.key
+        .split("/")
+        .filter((part) => part.startsWith(":"));
+      if (dynamicKeys.length !== match.length - 1) continue;
+
+      console.log(
+        "Dynamic:",
+        `${dynamicLink.domain}/${dynamicLink.key} (${key})`,
+      );
+
+      // /users/:id -> { id: "123" }
+      const dynamicParams = dynamicKeys.reduce(
+        (acc, key, idx) => {
+          acc[key.slice(1)] = match[idx + 1];
+          return acc;
+        },
+        {} as Record<string, string>,
+      );
+
+      // https://example.com/users/:id -> https://example.com/users/123
+      const url = dynamicLink.url
+        .split("/")
+        .map((part) => {
+          if (part.startsWith(":")) {
+            const param = part.slice(1);
+            return dynamicParams[param] || part;
+          }
+          return part;
+        })
+        .join("/");
+
+      return {
+        ...dynamicLink,
+        url,
+      };
+    }
+  }
+
+  return null;
+}
+
 export const Route = createFileRoute("/(redirect)/$")({
   server: {
     handlers: {
@@ -33,12 +109,7 @@ export const Route = createFileRoute("/(redirect)/$")({
         const searchPw = searchParams.get("pw");
         searchParams.delete("pw");
 
-        const link = await db.query.links.findFirst({
-          where: {
-            domain,
-            key: params._splat.toLowerCase(),
-          },
-        });
+        const link = await getLink(domain, params._splat);
         if (!link) {
           return new Response("Link not found", { status: 404 });
         }

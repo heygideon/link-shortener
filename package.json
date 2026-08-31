@@ -38,7 +38,6 @@
     "dayjs": "^1.11.20",
     "drizzle-orm": "1.0.0-beta.22",
     "he": "^1.2.0",
-    "isomorphic-dompurify": "^3.23.0",
     "lucide-react": "^0.545.0",
     "nanoid": "^5.1.9",
     "nitro": "3.0.260610-beta",

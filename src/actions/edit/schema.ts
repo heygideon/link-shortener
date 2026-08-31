@@ -70,11 +70,10 @@ export const editLinkSchema = z
         });
       }
       if (part.endsWith("*")) {
-        const idx = keyParams.indexOf(part);
-        if (idx !== keyParams.length - 1) {
+        if (!val.key.endsWith(part)) {
           ctx.addIssue({
             code: "custom",
-            message: `Parameter ${part.slice(1)} with * must be the last parameter`,
+            message: `Parameter ${part.slice(1)} with * must be last`,
             path: ["key"],
           });
         }

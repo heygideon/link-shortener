@@ -9,6 +9,7 @@ import { withoutProtocol } from "ufo";
 import { z } from "zod";
 import type { getLinks } from "#/actions/home";
 import { getLinksQuery } from "#/actions/home/queries";
+import RenderLinkKey from "#/components/app/RenderLinkKey";
 import { Button, LinkButton } from "#/components/ui/Button";
 import Input from "#/components/ui/Input";
 import {
@@ -157,7 +158,7 @@ function App() {
               <div className="min-w-0 flex-1">
                 <div className="flex text-sm">
                   <p>
-                    {link.domain}/{link.key}
+                    {link.domain}/<RenderLinkKey>{link.key}</RenderLinkKey>
                   </p>
                   <div className="flex-1"></div>
                   <p className="bg-pink-700 px-1.5 font-bold text-white">
@@ -176,13 +177,17 @@ function App() {
                 <div className="mt-1.5 flex gap-2 text-xs">
                   <p className="min-w-0 flex-1 truncate text-neutral-400">
                     -&gt;{" "}
-                    <a
-                      href={link.url}
-                      target="_blank"
-                      className="transition hover:text-white hover:underline"
-                    >
-                      {withoutProtocol(link.url)}
-                    </a>
+                    {link.pattern ? (
+                      <RenderLinkKey>{withoutProtocol(link.url)}</RenderLinkKey>
+                    ) : (
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        className="transition hover:text-white hover:underline"
+                      >
+                        {withoutProtocol(link.url)}
+                      </a>
+                    )}
                   </p>
                   <p
                     title={dayjs(link.createdAt).format("YYYY-MM-DD")}
