@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useLoaderData } from "@tanstack/react-router";
 import clsx from "clsx";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -90,6 +90,8 @@ function App() {
   const { sort, search } = Route.useSearch();
   const navigate = Route.useNavigate();
 
+  const { quote } = useLoaderData({ from: "/app/_app" });
+
   const sortedLinks = useMemo(() => {
     const sortOption =
       sortOptions.find((opt) => opt.value === sort) || sortOptions[0];
@@ -105,9 +107,7 @@ function App() {
   return (
     <div className="mx-auto max-w-4xl p-8">
       <h1 className="font-bold">link shortener</h1>
-      <p className="mt-1 text-sm text-neutral-400">
-        a radically simple link shortener.
-      </p>
+      <p className="mt-1 text-sm text-neutral-400">{quote}</p>
       <div className="mt-8">
         <div className="flex items-baseline justify-between gap-2">
           <h1 className="font-bold">your urls</h1>

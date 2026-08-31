@@ -1,10 +1,11 @@
-import UserDropdown from "#/components/app/UserDropdown";
 import {
   createFileRoute,
   Link,
   Outlet,
   redirect,
 } from "@tanstack/react-router";
+import UserDropdown from "#/components/app/UserDropdown";
+import { getRandomQuote } from "#/lib/quotes";
 
 const nav = [
   { label: "links", value: "/app/links" },
@@ -19,6 +20,9 @@ export const Route = createFileRoute("/app/_app")({
     }
     return { user: context.user };
   },
+  loader: () => ({
+    quote: getRandomQuote(),
+  }),
   component: RouteComponent,
 });
 
