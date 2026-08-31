@@ -2,9 +2,11 @@ import type { MetaTags } from "./-meta";
 
 export function CloakedTemplate({
   url,
+  srcDoc,
   metaTags,
 }: {
   url: string;
+  srcDoc?: string;
   metaTags: MetaTags;
 }) {
   const { title, description, image, icon } = metaTags;
@@ -16,10 +18,20 @@ export function CloakedTemplate({
         {image && <meta property="og:image" content={image} />}
         {icon && <link rel="icon" href={icon} />}
         {/* <link rel="icon" href={image || "https://www.google.com/s2/favicons?sz=64&domain_url=" + new URL(url).hostname} /> */}
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta charSet="UTF-8" />
       </head>
       <body>
         <iframe
-          src={url}
+          {...(srcDoc
+            ? {
+                srcDoc,
+                sandbox:
+                  "allow-forms allow-popups allow-popups-to-escape-sandbox",
+              }
+            : { src: url })}
           title={title}
           style={{
             position: "fixed",
