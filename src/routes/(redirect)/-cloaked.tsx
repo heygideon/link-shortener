@@ -2,11 +2,9 @@ import type { MetaTags } from "./-meta";
 
 export function CloakedTemplate({
   url,
-  srcDoc,
   metaTags,
 }: {
   url: string;
-  srcDoc?: string;
   metaTags: MetaTags;
 }) {
   const { title, description, image, icon } = metaTags;
@@ -25,13 +23,7 @@ export function CloakedTemplate({
       </head>
       <body>
         <iframe
-          {...(srcDoc
-            ? {
-                srcDoc,
-                sandbox:
-                  "allow-forms allow-popups allow-popups-to-escape-sandbox",
-              }
-            : { src: url })}
+          src={url}
           title={title}
           style={{
             position: "fixed",
