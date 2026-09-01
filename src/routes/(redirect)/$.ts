@@ -20,6 +20,7 @@ export async function verifyPlainPassword(one: string, two: string) {
 }
 
 async function getLink(domain: string, key: string) {
+  // generate all possible startsWith options for the key (/a, /a/b, /a/b/c)
   const parts = key.split("/");
   const startsWithOpts = parts.map((_, idx) =>
     parts.slice(0, idx + 1).join("/"),
@@ -35,11 +36,19 @@ async function getLink(domain: string, key: string) {
     db.query.links.findMany({
       where: {
         domain,
-        OR: startsWithOpts.map((opt) => ({
-          key: {
-            like: `${opt.toLowerCase()}%`,
+        OR: [
+          ...startsWithOpts.map((opt) => ({
+            key: {
+              like: `${opt.toLowerCase()}%`,
+            },
+          })),
+          // include case where the first part of the key is a param
+          {
+            key: {
+              like: ":%",
+            },
           },
-        })),
+        ],
       },
     }),
   ]);
