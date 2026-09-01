@@ -159,18 +159,18 @@ function App() {
               key={link.id}
               className="flex gap-3 border-b border-inherit py-3"
             >
-              <div className="grid size-5 place-items-center border border-neutral-700">
+              {/* <div className="grid size-5 place-items-center border border-neutral-700">
                 <span className="text-xs leading-none text-neutral-400">x</span>
-              </div>
+              </div> */}
               <div className="min-w-0 flex-1">
                 <div className="flex text-sm">
                   <p>
                     {link.domain}/<RenderLinkKey>{link.key}</RenderLinkKey>
                   </p>
                   <div className="flex-1"></div>
-                  <p className="bg-pink-700 px-1.5 font-bold text-white">
+                  {/* <p className="bg-pink-700 px-1.5 font-bold text-white">
                     tag-1
-                  </p>
+                  </p> */}
                   <div
                     className={clsx(
                       "ml-1.5 flex h-5 items-center gap-1 border border-neutral-700 px-1.5 text-neutral-400",
@@ -203,7 +203,7 @@ function App() {
                     {dayjs(link.createdAt).fromNow()}
                   </p>
                   <div className="flex items-center gap-1">
-                    <Button size="xs">[view]</Button>
+                    {/* <Button size="xs">[view]</Button> */}
                     <LinkButton
                       to="/app/links/$domain/$"
                       params={{

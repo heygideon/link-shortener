@@ -5,6 +5,7 @@ import { LinkIcon } from "lucide-react";
 import { useMemo } from "react";
 import type { getDomains } from "#/actions/domains";
 import { getDomainsQuery } from "#/actions/domains/queries";
+import { LinkButton } from "#/components/ui/Button";
 
 export const Route = createFileRoute("/app/_app/domains/")({
   async loader({ context: { queryClient } }) {
@@ -44,23 +45,27 @@ function DomainsList({
               <div className="flex text-sm">
                 <p>{domain.domain}</p>
                 <div className="flex-1"></div>
-                <div className="ml-1.5 flex h-5 items-center gap-1 border border-neutral-700 px-1 text-neutral-400">
+                <div className="ml-1.5 flex h-5 items-center gap-1 border border-neutral-700 px-1.5 text-neutral-400">
                   <LinkIcon className="size-4" />
                   <span>{domain.links}</span>
                 </div>
               </div>
-              <div className="mt-1.5 flex text-xs">
-                <p className="text-neutral-400">
-                  created {dayjs(domain.createdAt).format("YYYY-MM-DD")}
+              <div className="mt-1.5 flex gap-2 text-xs">
+                <p
+                  title={dayjs(domain.createdAt).format("YYYY-MM-DD")}
+                  className="flex-none text-neutral-400 underline decoration-dotted underline-offset-2"
+                >
+                  {dayjs(domain.createdAt).fromNow()}
                 </p>
                 <div className="flex-1"></div>
                 <div className="flex items-center gap-1">
-                  <span className="text-amber-300 hover:bg-amber-300 hover:text-black">
+                  <LinkButton
+                    to="/app/links"
+                    search={{ search: domain.domain }}
+                    size="xs"
+                  >
                     [view]
-                  </span>
-                  <span className="text-amber-300 hover:bg-amber-300 hover:text-black">
-                    [edit]
-                  </span>
+                  </LinkButton>
                 </div>
               </div>
             </div>
