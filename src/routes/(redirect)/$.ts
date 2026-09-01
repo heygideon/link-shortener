@@ -51,7 +51,7 @@ async function getLink(domain: string, key: string) {
   for (const dynamicLink of dynamicLinks) {
     if (!dynamicLink.pattern) continue;
 
-    const regex = new RegExp(dynamicLink.pattern);
+    const regex = new RegExp(`^${dynamicLink.pattern}$`, "i");
     const match = key.match(regex);
     if (match) {
       const dynamicKeys = dynamicLink.key
