@@ -1,6 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/app/_app/analytics/")({
+  head: () => ({
+    meta: [
+      {
+        title: "analytics - link shortener",
+      },
+    ],
+  }),
   component: App,
 });
 

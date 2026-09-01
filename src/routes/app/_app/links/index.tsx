@@ -82,6 +82,13 @@ export const Route = createFileRoute("/app/_app/links/")({
   loader: async ({ context: { queryClient } }) => {
     await queryClient.ensureQueryData(getLinksQuery());
   },
+  head: () => ({
+    meta: [
+      {
+        title: "links - link shortener",
+      },
+    ],
+  }),
   component: App,
 });
 

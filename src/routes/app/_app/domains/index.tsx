@@ -10,6 +10,13 @@ export const Route = createFileRoute("/app/_app/domains/")({
   async loader({ context: { queryClient } }) {
     await queryClient.ensureQueryData(getDomainsQuery());
   },
+  head: () => ({
+    meta: [
+      {
+        title: "domains - link shortener",
+      },
+    ],
+  }),
   component: App,
 });
 

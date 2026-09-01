@@ -21,13 +21,21 @@ import Switch from "#/components/ui/Switch";
 
 export const Route = createFileRoute("/app/_app/links/$domain/$")({
   async loader({ params, context: { queryClient } }) {
-    await Promise.all([
+    const [, link] = await Promise.all([
       queryClient.ensureQueryData(getDomainsQuery()),
       queryClient.ensureQueryData(
         getLinkQuery({ domain: params.domain, key: params._splat || "" }),
       ),
     ]);
+    return { link };
   },
+  head: ({ loaderData }) => ({
+    meta: [
+      {
+        title: `edit ${loaderData?.link ? `${loaderData.link.domain}/${loaderData.link.key}` : "link"} - link shortener`,
+      },
+    ],
+  }),
   component: App,
 });
 

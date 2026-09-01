@@ -24,6 +24,13 @@ export const Route = createFileRoute("/app/_app/links/new")({
     await queryClient.ensureQueryData(getDomainsQuery());
     return { defaultKey: genLinkKey() };
   },
+  head: () => ({
+    meta: [
+      {
+        title: "new link - link shortener",
+      },
+    ],
+  }),
   component: App,
 });
 
