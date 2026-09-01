@@ -29,9 +29,9 @@ export const createLink = createServerFn({ method: "POST" })
 
     const { normalisedKey, pattern } = getDynamicLinkData(data.key);
 
-    if (pattern && domain.userId !== context.user.id && !context.user.isAdmin) {
-      throw new Error("Dynamic links are not allowed on public domains");
-    }
+    // if (pattern && domain.userId !== context.user.id && !context.user.isAdmin) {
+    //   throw new Error("Dynamic links are not allowed on public domains");
+    // }
 
     try {
       await db.insert(links).values({

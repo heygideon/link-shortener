@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { useMemo } from "react";
 import type { getDomains } from "#/actions/domains";
 import { getDomainsQuery } from "#/actions/domains/queries";
+import DomainsInfo from "#/components/form/DomainsInfo";
 import { LinkButton } from "#/components/ui/Button";
 
 export const Route = createFileRoute("/app/_app/domains/")({
@@ -97,6 +98,7 @@ function App() {
 
   return (
     <div className="mx-auto max-w-4xl space-y-8 p-8">
+      <DomainsInfo />
       {userDomains.length > 0 && (
         <DomainsList title="your domains" domains={userDomains} />
       )}

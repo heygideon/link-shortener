@@ -17,8 +17,8 @@ export default function ParamsInfo() {
           </Accordion.Trigger>
         </Accordion.Header>
         <Accordion.Panel className="h-(--accordion-panel-height) overflow-hidden transition-[height] duration-300 ease-[steps(8)] data-ending-style:h-0 data-starting-style:h-0">
-          <div className="space-y-2 p-4 pt-0 text-sm text-pretty text-neutral-400">
-            <p>
+          <div className="space-y-2 p-4 pt-1 text-sm text-pretty text-neutral-400">
+            {/* <p>
               you can only create dynamic links if you own the domain.{" "}
               <i>
                 (if you want to get yours set up,{" "}
@@ -32,7 +32,7 @@ export default function ParamsInfo() {
                 </a>
                 )
               </i>
-            </p>
+            </p> */}
             <p>
               define parameters like{" "}
               <span className="text-cyan-300">:name</span>, using a colon and a
