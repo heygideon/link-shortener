@@ -4,14 +4,10 @@ import { nanoid } from "nanoid";
 import { joinURL, withQuery } from "ufo";
 import { getSession } from "#/lib/session";
 
-export const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : process.env.BASE_URL || "http://localhost:3000";
-
 export const Route = createFileRoute("/app/_app/auth/")({
   server: {
     handlers: {
-      GET: async () => {
+      GET: async ({ request }) => {
         const { session } = await getSession();
         if (session) {
           throw redirect({
@@ -27,6 +23,8 @@ export const Route = createFileRoute("/app/_app/auth/")({
           path: "/",
           maxAge: 60 * 60 * 24 * 7,
         });
+
+        const baseUrl = new URL(request.url).origin;
 
         // ?client_id=your_client_id&redirect_uri=https%3A%2F%2Farcade.hackclub.com%2Fauth%2Fcallback&response_type=code&scope=openid+profile+email
         const redirectUrl = withQuery(

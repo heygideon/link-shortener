@@ -4,7 +4,6 @@ import { ofetch } from "ofetch";
 import { joinURL } from "ufo";
 import db from "#/db";
 import { createSession } from "#/lib/session";
-import { baseUrl } from "..";
 
 interface TokenResponse {
   access_token: string;
@@ -38,6 +37,7 @@ export const Route = createFileRoute("/app/_app/auth/yth/callback")({
           });
         }
 
+        const baseUrl = new URL(request.url).origin;
         try {
           const { access_token } = await ofetch<TokenResponse>(
             "https://yth-auth.fly.dev/oauth/token",

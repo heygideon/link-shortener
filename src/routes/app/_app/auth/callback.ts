@@ -5,7 +5,6 @@ import { joinURL } from "ufo";
 import db from "#/db";
 import { users } from "#/db/schema";
 import { createSession } from "#/lib/session";
-import { baseUrl } from ".";
 
 interface TokenResponse {
   access_token: string;
@@ -47,6 +46,7 @@ export const Route = createFileRoute("/app/_app/auth/callback")({
         }
 
         try {
+          const baseUrl = new URL(request.url).origin;
           const { access_token } = await ofetch<TokenResponse>(
             "https://auth.hackclub.com/oauth/token",
             {
