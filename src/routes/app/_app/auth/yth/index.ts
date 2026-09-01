@@ -2,12 +2,20 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { setCookie } from "@tanstack/react-start/server";
 import { nanoid } from "nanoid";
 import { joinURL, withQuery } from "ufo";
+import { getSession } from "#/lib/session";
 import { baseUrl } from "..";
 
 export const Route = createFileRoute("/app/_app/auth/yth/")({
   server: {
     handlers: {
       GET: async () => {
+        const { session } = await getSession();
+        if (session) {
+          throw redirect({
+            to: "/app",
+          });
+        }
+
         const state = nanoid();
         setCookie("yth_state", state, {
           httpOnly: true,
