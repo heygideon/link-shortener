@@ -6,6 +6,7 @@ import { editLinkSchema } from "#/actions/edit/schema";
 import { createLink } from "#/actions/new";
 import { createLinkSchema } from "#/actions/new/schema";
 import FormMessage from "#/components/form/FormMessage";
+import ParamsInfo from "#/components/form/ParamsInfo";
 import { Button, LinkButton } from "#/components/ui/Button";
 import { Field } from "#/components/ui/Field";
 import Fieldset from "#/components/ui/Fieldset";
@@ -99,6 +100,8 @@ function App() {
         className="mt-6 space-y-6"
       >
         {error && <FormMessage state="error">{error.message}</FormMessage>}
+
+        <ParamsInfo />
 
         <div className="flex gap-2">
           <form.Field name="domain">
