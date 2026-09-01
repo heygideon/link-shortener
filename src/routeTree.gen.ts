@@ -21,7 +21,9 @@ import { Route as AppAppAuthIndexRouteImport } from './routes/app/_app/auth/inde
 import { Route as AppAppAnalyticsIndexRouteImport } from './routes/app/_app/analytics/index'
 import { Route as AppAppLinksNewRouteImport } from './routes/app/_app/links/new'
 import { Route as AppAppAuthCallbackRouteImport } from './routes/app/_app/auth/callback'
+import { Route as AppAppAuthYthIndexRouteImport } from './routes/app/_app/auth/yth/index'
 import { Route as AppAppLinksDomainSplatRouteImport } from './routes/app/_app/links/$domain.$'
+import { Route as AppAppAuthYthCallbackRouteImport } from './routes/app/_app/auth/yth/callback'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -83,9 +85,19 @@ const AppAppAuthCallbackRoute = AppAppAuthCallbackRouteImport.update({
   path: '/auth/callback',
   getParentRoute: () => AppAppRouteRoute,
 } as any)
+const AppAppAuthYthIndexRoute = AppAppAuthYthIndexRouteImport.update({
+  id: '/auth/yth/',
+  path: '/auth/yth/',
+  getParentRoute: () => AppAppRouteRoute,
+} as any)
 const AppAppLinksDomainSplatRoute = AppAppLinksDomainSplatRouteImport.update({
   id: '/links/$domain/$',
   path: '/links/$domain/$',
+  getParentRoute: () => AppAppRouteRoute,
+} as any)
+const AppAppAuthYthCallbackRoute = AppAppAuthYthCallbackRouteImport.update({
+  id: '/auth/yth/callback',
+  path: '/auth/yth/callback',
   getParentRoute: () => AppAppRouteRoute,
 } as any)
 
@@ -102,7 +114,9 @@ export interface FileRoutesByFullPath {
   '/app/auth/': typeof AppAppAuthIndexRoute
   '/app/domains/': typeof AppAppDomainsIndexRoute
   '/app/links/': typeof AppAppLinksIndexRoute
+  '/app/auth/yth/callback': typeof AppAppAuthYthCallbackRoute
   '/app/links/$domain/$': typeof AppAppLinksDomainSplatRoute
+  '/app/auth/yth/': typeof AppAppAuthYthIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -116,7 +130,9 @@ export interface FileRoutesByTo {
   '/app/auth': typeof AppAppAuthIndexRoute
   '/app/domains': typeof AppAppDomainsIndexRoute
   '/app/links': typeof AppAppLinksIndexRoute
+  '/app/auth/yth/callback': typeof AppAppAuthYthCallbackRoute
   '/app/links/$domain/$': typeof AppAppLinksDomainSplatRoute
+  '/app/auth/yth': typeof AppAppAuthYthIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -132,7 +148,9 @@ export interface FileRoutesById {
   '/app/_app/auth/': typeof AppAppAuthIndexRoute
   '/app/_app/domains/': typeof AppAppDomainsIndexRoute
   '/app/_app/links/': typeof AppAppLinksIndexRoute
+  '/app/_app/auth/yth/callback': typeof AppAppAuthYthCallbackRoute
   '/app/_app/links/$domain/$': typeof AppAppLinksDomainSplatRoute
+  '/app/_app/auth/yth/': typeof AppAppAuthYthIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -149,7 +167,9 @@ export interface FileRouteTypes {
     | '/app/auth/'
     | '/app/domains/'
     | '/app/links/'
+    | '/app/auth/yth/callback'
     | '/app/links/$domain/$'
+    | '/app/auth/yth/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -163,7 +183,9 @@ export interface FileRouteTypes {
     | '/app/auth'
     | '/app/domains'
     | '/app/links'
+    | '/app/auth/yth/callback'
     | '/app/links/$domain/$'
+    | '/app/auth/yth'
   id:
     | '__root__'
     | '/'
@@ -178,7 +200,9 @@ export interface FileRouteTypes {
     | '/app/_app/auth/'
     | '/app/_app/domains/'
     | '/app/_app/links/'
+    | '/app/_app/auth/yth/callback'
     | '/app/_app/links/$domain/$'
+    | '/app/_app/auth/yth/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -275,11 +299,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAppAuthCallbackRouteImport
       parentRoute: typeof AppAppRouteRoute
     }
+    '/app/_app/auth/yth/': {
+      id: '/app/_app/auth/yth/'
+      path: '/auth/yth'
+      fullPath: '/app/auth/yth/'
+      preLoaderRoute: typeof AppAppAuthYthIndexRouteImport
+      parentRoute: typeof AppAppRouteRoute
+    }
     '/app/_app/links/$domain/$': {
       id: '/app/_app/links/$domain/$'
       path: '/links/$domain/$'
       fullPath: '/app/links/$domain/$'
       preLoaderRoute: typeof AppAppLinksDomainSplatRouteImport
+      parentRoute: typeof AppAppRouteRoute
+    }
+    '/app/_app/auth/yth/callback': {
+      id: '/app/_app/auth/yth/callback'
+      path: '/auth/yth/callback'
+      fullPath: '/app/auth/yth/callback'
+      preLoaderRoute: typeof AppAppAuthYthCallbackRouteImport
       parentRoute: typeof AppAppRouteRoute
     }
   }
@@ -293,7 +331,9 @@ interface AppAppRouteRouteChildren {
   AppAppAuthIndexRoute: typeof AppAppAuthIndexRoute
   AppAppDomainsIndexRoute: typeof AppAppDomainsIndexRoute
   AppAppLinksIndexRoute: typeof AppAppLinksIndexRoute
+  AppAppAuthYthCallbackRoute: typeof AppAppAuthYthCallbackRoute
   AppAppLinksDomainSplatRoute: typeof AppAppLinksDomainSplatRoute
+  AppAppAuthYthIndexRoute: typeof AppAppAuthYthIndexRoute
 }
 
 const AppAppRouteRouteChildren: AppAppRouteRouteChildren = {
@@ -304,7 +344,9 @@ const AppAppRouteRouteChildren: AppAppRouteRouteChildren = {
   AppAppAuthIndexRoute: AppAppAuthIndexRoute,
   AppAppDomainsIndexRoute: AppAppDomainsIndexRoute,
   AppAppLinksIndexRoute: AppAppLinksIndexRoute,
+  AppAppAuthYthCallbackRoute: AppAppAuthYthCallbackRoute,
   AppAppLinksDomainSplatRoute: AppAppLinksDomainSplatRoute,
+  AppAppAuthYthIndexRoute: AppAppAuthYthIndexRoute,
 }
 
 const AppAppRouteRouteWithChildren = AppAppRouteRoute._addFileChildren(

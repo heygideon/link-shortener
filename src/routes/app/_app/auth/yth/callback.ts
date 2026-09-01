@@ -3,14 +3,13 @@ import { getCookie } from "@tanstack/react-start/server";
 import { ofetch } from "ofetch";
 import { joinURL } from "ufo";
 import db from "#/db";
-import { users } from "#/db/schema";
 import { createSession } from "#/lib/session";
-import { baseUrl } from ".";
+import { baseUrl } from "..";
 
 interface TokenResponse {
   access_token: string;
   token_type: string;
-  id_token: string;
+  refresh_token: string;
 }
 interface UserInfoResponse {
   sub: string;
@@ -21,20 +20,13 @@ interface UserInfoResponse {
   family_name: string;
   nickname: string;
   updated_at: number;
-  slack_id: string;
-  verification_status:
-    | "needs_submission"
-    | "pending"
-    | "verified"
-    | "ineligible";
-  ysws_eligible: boolean;
 }
 
-export const Route = createFileRoute("/app/_app/auth/callback")({
+export const Route = createFileRoute("/app/_app/auth/yth/callback")({
   server: {
     handlers: {
       GET: async ({ request }) => {
-        const storedState = getCookie("hackclub_state");
+        const storedState = getCookie("yth_state");
 
         const search = new URL(request.url).searchParams;
         const state = search.get("state");
@@ -48,20 +40,20 @@ export const Route = createFileRoute("/app/_app/auth/callback")({
 
         try {
           const { access_token } = await ofetch<TokenResponse>(
-            "https://auth.hackclub.com/oauth/token",
+            "https://yth-auth.fly.dev/oauth/token",
             {
               method: "POST",
               body: {
-                client_id: process.env.HACKCLUB_CLIENT_ID,
-                client_secret: process.env.HACKCLUB_CLIENT_SECRET,
-                redirect_uri: joinURL(baseUrl, "/app/auth/callback"),
+                client_id: process.env.YTH_CLIENT_ID,
+                client_secret: process.env.YTH_CLIENT_SECRET,
+                redirect_uri: joinURL(baseUrl, "/app/auth/yth/callback"),
                 code,
                 grant_type: "authorization_code",
               },
             },
           );
           const user = await ofetch<UserInfoResponse>(
-            "https://auth.hackclub.com/oauth/userinfo",
+            "https://yth-auth.fly.dev/oauth/userinfo",
             {
               headers: {
                 Authorization: `Bearer ${access_token}`,
@@ -69,25 +61,19 @@ export const Route = createFileRoute("/app/_app/auth/callback")({
             },
           );
 
-          if (user.verification_status !== "verified") {
+          const existingUser = await db.query.users.findFirst({
+            where: { email: user.email },
+          });
+          if (!existingUser) {
             throw redirect({
               to: "/",
-              search: { auth_error: "Your account is not ID verified" },
+              search: {
+                auth_error: `Hi ${user.given_name}! Sign in first with Hack Club (with the same email) to check you're <18 ^-^`,
+              },
             });
           }
 
-          await db
-            .insert(users)
-            .values({
-              id: user.sub,
-              email: user.email,
-              firstName: user.given_name,
-              lastName: user.family_name,
-              slackId: user.slack_id,
-            })
-            .onConflictDoNothing({ target: users.id });
-
-          await createSession(user.sub);
+          await createSession(existingUser.id);
         } catch (_e) {
           if (isRedirect(_e)) {
             throw _e;
