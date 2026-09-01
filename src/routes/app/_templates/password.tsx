@@ -13,6 +13,7 @@ import { verifyPlainPassword } from "#/routes/(redirect)/$";
 export const Route = createFileRoute("/app/_templates/password")({
   validateSearch: z.object({
     key: z.string(),
+    to: z.string().optional(),
   }),
   component: RouteComponent,
 });
@@ -65,7 +66,7 @@ function RouteComponent() {
     onSuccess: () => {
       navigate({
         to: "/$",
-        params: { _splat: search.key },
+        params: { _splat: search.to || search.key },
         reloadDocument: true,
       });
       return new Promise(() => {});

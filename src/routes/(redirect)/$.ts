@@ -171,7 +171,7 @@ export const Route = createFileRoute("/(redirect)/$")({
           if (!passwordVerified) {
             return Response.redirect(
               new URL(
-                `/app/password?key=${encodeURIComponent(link.key)}`,
+                `/app/password?key=${encodeURIComponent(link.key)}&to=${encodeURIComponent(params._splat)}`,
                 request.url,
               ),
               302,
