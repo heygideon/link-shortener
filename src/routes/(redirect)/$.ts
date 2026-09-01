@@ -57,7 +57,26 @@ async function getLink(domain: string, key: string) {
     return staticLink;
   }
 
-  for (const dynamicLink of dynamicLinks) {
+  // sort returned links
+  const sortedDynamicLinks = dynamicLinks.sort((one, two) => {
+    const oneParamIdx = one.normalisedKey
+      .split("/")
+      .findIndex((part) => part.startsWith(":"));
+    const twoParamIdx = two.normalisedKey
+      .split("/")
+      .findIndex((part) => part.startsWith(":"));
+
+    // if one link has a param earlier in the key, it should come later
+    if (oneParamIdx !== twoParamIdx) {
+      return twoParamIdx - oneParamIdx;
+    }
+
+    // if both links have params at the same index, the longer key should come later
+    // this should handle splat links (e.g. /users/:id before /users/:id*)
+    return one.normalisedKey.length - two.normalisedKey.length;
+  });
+
+  for (const dynamicLink of sortedDynamicLinks) {
     if (!dynamicLink.pattern) continue;
 
     const regex = new RegExp(`^${dynamicLink.pattern}$`, "i");
