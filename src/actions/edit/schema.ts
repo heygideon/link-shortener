@@ -78,12 +78,19 @@ export const editLinkSchema = z
           });
         }
       }
+      if (keyParams.filter((p) => p === part).length > 1) {
+        ctx.addIssue({
+          code: "custom",
+          message: `Parameter ${part.slice(1)} is defined multiple times`,
+          path: ["key"],
+        });
+      }
     }
     for (const part of urlParams) {
       if (!keyParams.includes(part)) {
         ctx.addIssue({
           code: "custom",
-          message: `Parameter ${part.slice(1)} is not defined in the short URL`,
+          message: `Parameter ${part.slice(1)} is not defined in key`,
           path: ["url"],
         });
       }
