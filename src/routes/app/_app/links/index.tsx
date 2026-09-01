@@ -197,7 +197,7 @@ function App() {
                     )}
                   </p>
                   <p
-                    title={dayjs(link.createdAt).format("YYYY-MM-DD")}
+                    title={dayjs(link.createdAt).format("YYYY-MM-DD, HH:mm:ss")}
                     className="flex-none text-neutral-400 underline decoration-dotted underline-offset-2"
                   >
                     {dayjs(link.createdAt).fromNow()}

@@ -52,7 +52,7 @@ function DomainsList({
               </div>
               <div className="mt-1.5 flex gap-2 text-xs">
                 <p
-                  title={dayjs(domain.createdAt).format("YYYY-MM-DD")}
+                  title={dayjs(domain.createdAt).format("YYYY-MM-DD, HH:mm:ss")}
                   className="flex-none text-neutral-400 underline decoration-dotted underline-offset-2"
                 >
                   {dayjs(domain.createdAt).fromNow()}
