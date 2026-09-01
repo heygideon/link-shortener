@@ -1,6 +1,6 @@
 import { Select as SelectPrimitive } from "@base-ui/react/select";
+import { CaretDownIcon } from "@phosphor-icons/react";
 import clsx from "clsx";
-import { ChevronDownIcon } from "lucide-react";
 
 const Select = SelectPrimitive.Root;
 
@@ -14,7 +14,7 @@ function SelectTrigger({ className, ...props }: SelectPrimitive.Trigger.Props) {
       )}
     >
       <SelectPrimitive.Value className="text-sm" />
-      <ChevronDownIcon className="size-3" />
+      <CaretDownIcon weight="bold" className="size-3" />
     </SelectPrimitive.Trigger>
   );
 }

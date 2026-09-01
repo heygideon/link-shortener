@@ -1,5 +1,5 @@
 import { Accordion } from "@base-ui/react/accordion";
-import { ChevronDownIcon } from "lucide-react";
+import { CaretDownIcon } from "@phosphor-icons/react";
 
 export default function ParamsInfo() {
   return (
@@ -10,7 +10,10 @@ export default function ParamsInfo() {
             <span className="min-w-0 flex-1">
               using dynamic links (with parameters)
             </span>
-            <ChevronDownIcon className="size-4 group-data-panel-open:-rotate-180" />
+            <CaretDownIcon
+              weight="bold"
+              className="size-3 group-data-panel-open:-rotate-180"
+            />
           </Accordion.Trigger>
         </Accordion.Header>
         <Accordion.Panel className="h-(--accordion-panel-height) overflow-hidden transition-[height] duration-300 ease-[steps(8)] data-ending-style:h-0 data-starting-style:h-0">

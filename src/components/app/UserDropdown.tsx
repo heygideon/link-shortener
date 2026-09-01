@@ -1,11 +1,11 @@
 import { Menu } from "@base-ui/react/menu";
+import { SignOutIcon } from "@phosphor-icons/react";
 import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { LogOutIcon } from "lucide-react";
 import { logout } from "#/actions/auth";
 import { getCurrentUserQuery } from "#/actions/auth/queries";
 
@@ -62,7 +62,7 @@ export default function UserDropdown() {
                 closeOnClick={false}
                 className="-m-1.5 flex items-center gap-2 p-1.5 outline-none data-disabled:opacity-50 data-highlighted:not-data-disabled:bg-amber-300 data-highlighted:not-data-disabled:text-black"
               >
-                <LogOutIcon className="size-4" />
+                <SignOutIcon weight="bold" className="size-3" />
                 <p className="text-xs">Logout</p>
               </Menu.Item>
             </div>

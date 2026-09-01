@@ -1,5 +1,5 @@
+import { ClockCountdownIcon } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ClockFadingIcon } from "lucide-react";
 import z from "zod";
 
 export const Route = createFileRoute("/app/_templates/expired")({
@@ -17,7 +17,7 @@ function RouteComponent() {
       <div className="relative isolate overflow-clip border border-neutral-700 p-4">
         <div className="absolute inset-0 -top-2 -z-10 h-4 rounded-b-[50%] bg-red-300 blur-3xl"></div>
         <div className="mx-auto mb-3 grid size-12 place-items-center rounded-full border border-neutral-700 bg-neutral-800">
-          <ClockFadingIcon className="size-6 text-neutral-400" />
+          <ClockCountdownIcon className="size-6 text-neutral-400" />
         </div>
         <h1 className="font-bold">link expired</h1>
         <p className="mt-1.5 text-xs text-neutral-400">

@@ -1,16 +1,16 @@
+import { CursorClickIcon } from "@phosphor-icons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
 import clsx from "clsx";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { MousePointerClickIcon } from "lucide-react";
 import { useMemo } from "react";
 import { withoutProtocol } from "ufo";
 import { z } from "zod";
 import type { getLinks } from "#/actions/home";
 import { getLinksQuery } from "#/actions/home/queries";
 import RenderLinkKey from "#/components/app/RenderLinkKey";
-import { Button, LinkButton } from "#/components/ui/Button";
+import { LinkButton } from "#/components/ui/Button";
 import Input from "#/components/ui/Input";
 import {
   Select,
@@ -177,7 +177,7 @@ function App() {
                       !link.clicks && "opacity-50",
                     )}
                   >
-                    <MousePointerClickIcon className="size-4" />
+                    <CursorClickIcon weight="bold" className="size-3" />
                     <span>{link.clicks}</span>
                   </div>
                 </div>

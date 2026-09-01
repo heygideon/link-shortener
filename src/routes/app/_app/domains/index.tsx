@@ -1,7 +1,7 @@
+import { LinkSimpleIcon } from "@phosphor-icons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import dayjs from "dayjs";
-import { LinkIcon } from "lucide-react";
 import { useMemo } from "react";
 import type { getDomains } from "#/actions/domains";
 import { getDomainsQuery } from "#/actions/domains/queries";
@@ -46,7 +46,7 @@ function DomainsList({
                 <p>{domain.domain}</p>
                 <div className="flex-1"></div>
                 <div className="ml-1.5 flex h-5 items-center gap-1 border border-neutral-700 px-1.5 text-neutral-400">
-                  <LinkIcon className="size-4" />
+                  <LinkSimpleIcon weight="bold" className="size-3" />
                   <span>{domain.links}</span>
                 </div>
               </div>
