@@ -52,7 +52,7 @@ export const links = sqliteTable(
     url: text("url").notNull(),
 
     // for dynamic links
-    normalisedKey: text("normalised_key").unique(),
+    normalisedKey: text("normalised_key").notNull(),
     pattern: text("pattern"),
 
     userId: text("user_id")
@@ -67,7 +67,13 @@ export const links = sqliteTable(
 
     ...timestamps,
   },
-  (table) => [uniqueIndex("domain_key_idx").on(table.domain, table.key)],
+  (table) => [
+    uniqueIndex("domain_key_idx").on(table.domain, table.key),
+    uniqueIndex("domain_normalised_key_idx").on(
+      table.domain,
+      table.normalisedKey,
+    ),
+  ],
 );
 
 export const linkClicks = sqliteTable(
