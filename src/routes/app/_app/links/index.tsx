@@ -126,6 +126,7 @@ function App() {
             onValueChange={(v) => {
               navigate({
                 search: (s) => ({ ...s, search: v }),
+                replace: true,
                 resetScroll: false,
               });
             }}
@@ -139,6 +140,7 @@ function App() {
               if (!opt) return;
               navigate({
                 search: (s) => ({ ...s, sort: opt.value }),
+                replace: true,
                 resetScroll: false,
               });
             }}
